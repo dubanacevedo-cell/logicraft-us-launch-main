@@ -8,10 +8,11 @@ import {
   Gauge,
   Lock,
   LineChart,
-  ArrowRight,
+  ArrowUpRight,
   Mail,
   MapPin,
-  MessageCircle,
+  Phone,
+  Minus,
 } from "lucide-react";
 
 export const Route = createFileRoute("/")({
@@ -19,265 +20,275 @@ export const Route = createFileRoute("/")({
 });
 
 const services = [
-  { icon: Activity, title: "Transactional Systems", desc: "Transaction engines with ACID guarantees, high concurrency and data consistency under extreme pressure.", tags: ["Core Banking", "Payments", "Settlements"] },
-  { icon: ShieldCheck, title: "High Availability", desc: "Distributed systems with automatic failover, active replication and guaranteed disaster recovery.", tags: ["Microservices", "Kubernetes", "Cloud"] },
-  { icon: Plug, title: "Enterprise Integration", desc: "We connect legacy and modern ecosystems through robust APIs, message queues and ESB.", tags: ["REST APIs", "Kafka", "EDI"] },
-  { icon: Gauge, title: "Real-Time Processing", desc: "Data pipelines and rules engines that process millions of events per second with sub-50ms latency.", tags: ["Streaming", "CEP", "Event Sourcing"] },
-  { icon: Lock, title: "Security & Compliance", desc: "Security controls, complete audits, end-to-end encryption and international regulatory compliance.", tags: ["PCI-DSS", "ISO 27001", "SOC 2"] },
-  { icon: LineChart, title: "Observability", desc: "Operational dashboards, intelligent alerts and real-time performance analysis for complete visibility.", tags: ["Grafana", "Prometheus", "ELK"] },
+  { icon: Activity, title: "Transactional Systems", desc: "Transaction engines with ACID guarantees, high concurrency and data consistency under extreme pressure." },
+  { icon: ShieldCheck, title: "High Availability", desc: "Distributed architectures with automatic failover, active replication and guaranteed disaster recovery." },
+  { icon: Plug, title: "Enterprise Integration", desc: "We connect legacy and modern ecosystems through robust APIs, message queues and service buses." },
+  { icon: Gauge, title: "Real-Time Processing", desc: "Data pipelines and rules engines that process millions of events per second with sub-50ms latency." },
+  { icon: Lock, title: "Security & Compliance", desc: "Security controls, complete audits, end-to-end encryption and international regulatory compliance." },
+  { icon: LineChart, title: "Observability", desc: "Operational dashboards, intelligent alerts and real-time performance analysis for complete visibility." },
 ];
 
-const reasons = [
-  { n: "01", title: "Deep specialization", desc: "We are not generalists. Years solving the most complex transactional systems problems across the Americas." },
-  { n: "02", title: "Focus on availability", desc: "Every architecture is designed assuming failures will occur. The difference is how the system responds." },
-  { n: "03", title: "Custom development", desc: "No client is alike. We adapt each solution to your processes, tech stack and specific business goals." },
+const principles = [
+  { n: "01", title: "Deep specialization", desc: "Years solving the most complex transactional systems problems across the Americas." },
+  { n: "02", title: "Built for resilience", desc: "Every architecture is designed assuming failures will occur. The difference is how the system responds." },
+  { n: "03", title: "Tailored engineering", desc: "We adapt each solution to your processes, technology stack and specific business outcomes." },
   { n: "04", title: "Partners, not vendors", desc: "We work alongside your team, transfer knowledge and leave you with your own capabilities." },
 ];
 
-const stack = ["Java / Spring", "Node.js", "Python", "Go", "PostgreSQL", "Oracle DB", "Redis", "Apache Kafka", "Kubernetes", "Docker", "AWS · GCP", "Terraform", "Grafana", "Prometheus", "ElasticSearch", "RabbitMQ"];
-
-const marquee = ["High Availability", "Transactional Security", "Scalability", "Operational Resilience", "Real Time", "Business Continuity"];
+const stack = ["Java · Spring", "Node.js", "Python", "Go", "PostgreSQL", "Oracle DB", "Apache Kafka", "Kubernetes", "AWS", "GCP", "Terraform", "Grafana"];
 
 function Index() {
   return (
     <div className="min-h-screen bg-background text-foreground antialiased">
       {/* NAV */}
-      <header className="fixed top-0 inset-x-0 z-50 backdrop-blur-md bg-background/70 border-b border-border/50">
-        <nav className="mx-auto max-w-7xl px-6 h-16 flex items-center justify-between">
-          <a href="#top" className="flex items-center gap-2.5">
-            <img src={logoDark} alt="Vertice Tech Group" className="h-9 w-9 rounded-md object-cover" />
-            <span className="font-semibold tracking-tight text-sm sm:text-base">
-              VERTICE TECH <span className="text-primary">GROUP</span>
-            </span>
+      <header className="fixed top-0 inset-x-0 z-50 bg-background/85 backdrop-blur-md border-b border-border">
+        <nav className="mx-auto max-w-6xl px-6 lg:px-10 h-20 flex items-center justify-between">
+          <a href="#top" className="flex items-center gap-3">
+            <img src={logoDark} alt="Vertice Tech Group" className="h-10 w-10 object-contain" />
+            <div className="leading-tight">
+              <div className="text-[11px] tracking-[0.32em] text-muted-foreground">VERTICE</div>
+              <div className="text-sm font-semibold tracking-[0.18em]">TECH GROUP</div>
+            </div>
           </a>
-          <div className="hidden md:flex items-center gap-8 text-sm text-muted-foreground">
-            <a href="#services" className="hover:text-foreground transition">Services</a>
-            <a href="#why" className="hover:text-foreground transition">Why us</a>
-            <a href="#stack" className="hover:text-foreground transition">Stack</a>
+          <div className="hidden md:flex items-center gap-10 text-[13px] text-muted-foreground">
+            <a href="#capabilities" className="hover:text-foreground transition">Capabilities</a>
+            <a href="#approach" className="hover:text-foreground transition">Approach</a>
+            <a href="#expertise" className="hover:text-foreground transition">Expertise</a>
             <a href="#contact" className="hover:text-foreground transition">Contact</a>
           </div>
-          <a href="#contact" className="inline-flex items-center gap-2 rounded-full bg-[image:var(--gradient-primary)] px-4 py-2 text-sm font-medium text-primary-foreground shadow-[var(--shadow-glow)] hover:opacity-90 transition">
-            Free analysis <ArrowRight className="h-4 w-4" />
+          <a href="#contact" className="hidden sm:inline-flex items-center gap-2 border-b border-foreground pb-1 text-[13px] font-medium hover:gap-3 transition-all">
+            Start a conversation <ArrowUpRight className="h-4 w-4" />
           </a>
         </nav>
       </header>
 
       {/* HERO */}
-      <section id="top" className="relative pt-32 pb-24 overflow-hidden" style={{ background: "var(--gradient-hero)" }}>
-        <div className="absolute inset-0 opacity-[0.05] [background-image:linear-gradient(var(--color-foreground)_1px,transparent_1px),linear-gradient(90deg,var(--color-foreground)_1px,transparent_1px)] [background-size:48px_48px]" />
-        <div className="relative mx-auto max-w-7xl px-6 grid lg:grid-cols-12 gap-12 items-center">
-          <div className="lg:col-span-7">
-            <div className="inline-flex items-center gap-2 rounded-full border border-border bg-card/60 px-3 py-1 text-xs text-muted-foreground">
-              <span className="h-1.5 w-1.5 rounded-full bg-primary animate-pulse" />
-              Software · Transactional · Enterprise · USA
-            </div>
-            <h1 className="mt-6 text-4xl sm:text-5xl lg:text-6xl font-bold tracking-tight leading-[1.05]">
-              Technology that <span className="bg-[image:var(--gradient-primary)] bg-clip-text text-transparent">powers</span> your business.
-            </h1>
-            <p className="mt-6 text-lg text-muted-foreground max-w-xl">
-              We design and develop mission-critical platforms for US companies that cannot afford downtime — payments, logistics, complex transactional flows.
-            </p>
-            <div className="mt-8 flex flex-wrap gap-3">
-              <a href="#contact" className="inline-flex items-center gap-2 rounded-full bg-[image:var(--gradient-primary)] px-6 py-3 text-sm font-medium text-primary-foreground shadow-[var(--shadow-glow)] hover:opacity-90 transition">
-                Free architecture analysis <ArrowRight className="h-4 w-4" />
-              </a>
-              <a href="#services" className="inline-flex items-center gap-2 rounded-full border border-border px-6 py-3 text-sm font-medium hover:bg-card transition">
-                View services
-              </a>
-            </div>
-            <div className="mt-12 flex items-center gap-8">
-              <div>
-                <div className="text-3xl font-bold text-primary">99.47%</div>
-                <div className="text-xs uppercase tracking-wider text-muted-foreground mt-1">Uptime</div>
-              </div>
-              <div className="h-10 w-px bg-border" />
-              <div>
-                <div className="text-3xl font-bold text-primary">24/7</div>
-                <div className="text-xs uppercase tracking-wider text-muted-foreground mt-1">Operations</div>
-              </div>
-              <div className="h-10 w-px bg-border" />
-              <div>
-                <div className="text-3xl font-bold text-primary">&lt;50ms</div>
-                <div className="text-xs uppercase tracking-wider text-muted-foreground mt-1">Latency</div>
-              </div>
-            </div>
+      <section id="top" className="relative pt-40 pb-28 border-b border-border">
+        <div className="absolute inset-0 opacity-[0.025] [background-image:linear-gradient(var(--color-foreground)_1px,transparent_1px),linear-gradient(90deg,var(--color-foreground)_1px,transparent_1px)] [background-size:64px_64px] pointer-events-none" />
+        <div className="relative mx-auto max-w-6xl px-6 lg:px-10">
+          <div className="flex items-center gap-3 text-[11px] tracking-[0.32em] text-muted-foreground">
+            <Minus className="h-3 w-8 text-accent" />
+            EST. UNITED STATES · MISSION-CRITICAL SOFTWARE
           </div>
-          <div className="lg:col-span-5 flex justify-center">
-            <div className="relative">
-              <div className="absolute -inset-8 bg-[image:var(--gradient-primary)] opacity-20 blur-3xl rounded-full" />
-              <img src={logoDark} alt="Vertice Tech Group LLC logo" className="relative w-full max-w-md rounded-2xl shadow-[var(--shadow-card)] border border-border" />
-            </div>
-          </div>
-        </div>
-      </section>
-
-      {/* MARQUEE */}
-      <div className="border-y border-border bg-card/40 overflow-hidden">
-        <div className="flex gap-12 py-4 whitespace-nowrap animate-[scroll_30s_linear_infinite]">
-          {[...marquee, ...marquee, ...marquee].map((t, i) => (
-            <span key={i} className="text-sm uppercase tracking-[0.2em] text-muted-foreground flex items-center gap-12">
-              {t}<span className="text-primary">●</span>
-            </span>
-          ))}
-        </div>
-      </div>
-
-      {/* SERVICES */}
-      <section id="services" className="py-24">
-        <div className="mx-auto max-w-7xl px-6">
-          <div className="max-w-2xl">
-            <div className="text-sm uppercase tracking-[0.2em] text-primary">Services</div>
-            <h2 className="mt-3 text-4xl sm:text-5xl font-bold tracking-tight">
-              Your way. <span className="text-muted-foreground">Our engineering.</span>
-            </h2>
-            <p className="mt-4 text-muted-foreground">
-              Mission-critical and transactional software solutions for companies that demand high performance, security and scalability in every operation.
+          <h1 className="font-serif mt-10 text-5xl sm:text-6xl lg:text-7xl leading-[1.02] tracking-tight max-w-5xl">
+            Engineering the systems<br />
+            <span className="italic text-accent">that cannot fail.</span>
+          </h1>
+          <div className="mt-12 grid lg:grid-cols-12 gap-10 items-end">
+            <p className="lg:col-span-6 lg:col-start-7 text-lg leading-relaxed text-muted-foreground">
+              Vertice Tech Group designs and builds transactional, high-availability platforms for institutions that operate at the edge of complexity — payments, logistics, and the intricate flows that move modern enterprises.
             </p>
           </div>
-          <div className="mt-14 grid md:grid-cols-2 lg:grid-cols-3 gap-5">
-            {services.map((s) => (
-              <div key={s.title} className="group relative rounded-2xl border border-border bg-card p-7 hover:border-primary/50 transition-all hover:-translate-y-1 hover:shadow-[var(--shadow-glow)]">
-                <div className="h-11 w-11 rounded-xl bg-[image:var(--gradient-primary)] flex items-center justify-center text-primary-foreground">
-                  <s.icon className="h-5 w-5" />
-                </div>
-                <h3 className="mt-5 text-xl font-semibold">{s.title}</h3>
-                <p className="mt-2 text-sm text-muted-foreground leading-relaxed">{s.desc}</p>
-                <div className="mt-5 flex flex-wrap gap-2">
-                  {s.tags.map((t) => (
-                    <span key={t} className="text-xs px-2.5 py-1 rounded-full bg-secondary text-secondary-foreground">{t}</span>
-                  ))}
-                </div>
+          <div className="mt-14 flex flex-wrap gap-4">
+            <a href="#contact" className="inline-flex items-center gap-3 bg-primary text-primary-foreground px-7 py-4 text-[13px] tracking-wider uppercase font-medium hover:bg-primary/90 transition">
+              Request architecture review <ArrowUpRight className="h-4 w-4" />
+            </a>
+            <a href="#capabilities" className="inline-flex items-center gap-3 border border-border px-7 py-4 text-[13px] tracking-wider uppercase font-medium hover:border-foreground transition">
+              Explore capabilities
+            </a>
+          </div>
+          <div className="mt-20 grid grid-cols-2 md:grid-cols-4 gap-px bg-border border border-border">
+            {[
+              { v: "99.47%", l: "Platform uptime" },
+              { v: "24 / 7", l: "Operations" },
+              { v: "< 50 ms", l: "Transaction latency" },
+              { v: "100%", l: "US-incorporated" },
+            ].map((s) => (
+              <div key={s.l} className="bg-background p-8">
+                <div className="font-serif text-4xl text-foreground">{s.v}</div>
+                <div className="mt-3 text-[11px] tracking-[0.24em] uppercase text-muted-foreground">{s.l}</div>
               </div>
             ))}
           </div>
         </div>
       </section>
 
-      {/* WHY */}
-      <section id="why" className="py-24 border-t border-border bg-card/30">
-        <div className="mx-auto max-w-7xl px-6">
-          <div className="max-w-2xl">
-            <div className="text-sm uppercase tracking-[0.2em] text-primary">Why Vertice Tech</div>
-            <h2 className="mt-3 text-4xl sm:text-5xl font-bold tracking-tight">
-              Built for <span className="text-muted-foreground">critical environments.</span>
-            </h2>
+      {/* INTRO STATEMENT */}
+      <section className="py-28 border-b border-border">
+        <div className="mx-auto max-w-6xl px-6 lg:px-10 grid lg:grid-cols-12 gap-12">
+          <div className="lg:col-span-4">
+            <div className="text-[11px] tracking-[0.32em] text-muted-foreground flex items-center gap-3">
+              <Minus className="h-3 w-8 text-accent" /> 01 · FIRM
+            </div>
           </div>
-          <div className="mt-14 grid md:grid-cols-2 gap-px bg-border rounded-2xl overflow-hidden">
-            {reasons.map((r) => (
-              <div key={r.n} className="bg-background p-8 hover:bg-card transition">
-                <div className="text-5xl font-bold text-primary/30">{r.n}</div>
-                <h3 className="mt-4 text-xl font-semibold">{r.title}</h3>
-                <p className="mt-2 text-muted-foreground">{r.desc}</p>
+          <div className="lg:col-span-8">
+            <h2 className="font-serif text-3xl sm:text-4xl lg:text-5xl leading-[1.15] tracking-tight">
+              A small firm of senior engineers, focused on the systems where downtime is measured in lost trust — not just lost revenue.
+            </h2>
+            <p className="mt-8 text-muted-foreground leading-relaxed max-w-2xl">
+              We partner with financial institutions, payment processors and enterprises operating at scale. Our practice is intentionally narrow: transactional platforms, real-time integration and the disciplined craft required to keep them running.
+            </p>
+          </div>
+        </div>
+      </section>
+
+      {/* CAPABILITIES */}
+      <section id="capabilities" className="py-28 border-b border-border">
+        <div className="mx-auto max-w-6xl px-6 lg:px-10">
+          <div className="grid lg:grid-cols-12 gap-12 mb-16">
+            <div className="lg:col-span-4">
+              <div className="text-[11px] tracking-[0.32em] text-muted-foreground flex items-center gap-3">
+                <Minus className="h-3 w-8 text-accent" /> 02 · CAPABILITIES
+              </div>
+            </div>
+            <div className="lg:col-span-8">
+              <h2 className="font-serif text-4xl sm:text-5xl tracking-tight leading-[1.05]">
+                Six disciplines, <span className="italic">one practice.</span>
+              </h2>
+            </div>
+          </div>
+          <div className="grid md:grid-cols-2 lg:grid-cols-3 border-t border-l border-border">
+            {services.map((s, i) => (
+              <div key={s.title} className="group relative border-r border-b border-border p-10 bg-background hover:bg-secondary/40 transition">
+                <div className="text-[11px] tracking-[0.32em] text-muted-foreground">0{i + 1}</div>
+                <s.icon className="mt-8 h-6 w-6 text-accent" strokeWidth={1.25} />
+                <h3 className="font-serif mt-6 text-2xl tracking-tight">{s.title}</h3>
+                <p className="mt-4 text-sm text-muted-foreground leading-relaxed">{s.desc}</p>
               </div>
             ))}
           </div>
         </div>
       </section>
 
-      {/* STACK */}
-      <section id="stack" className="py-24">
-        <div className="mx-auto max-w-7xl px-6">
-          <div className="max-w-2xl">
-            <div className="text-sm uppercase tracking-[0.2em] text-primary">Technology</div>
-            <h2 className="mt-3 text-4xl sm:text-5xl font-bold tracking-tight">
-              Production-proven <span className="text-muted-foreground">stack.</span>
-            </h2>
+      {/* APPROACH */}
+      <section id="approach" className="py-28 border-b border-border bg-secondary/40">
+        <div className="mx-auto max-w-6xl px-6 lg:px-10">
+          <div className="grid lg:grid-cols-12 gap-12 mb-16">
+            <div className="lg:col-span-4">
+              <div className="text-[11px] tracking-[0.32em] text-muted-foreground flex items-center gap-3">
+                <Minus className="h-3 w-8 text-accent" /> 03 · APPROACH
+              </div>
+            </div>
+            <div className="lg:col-span-8">
+              <h2 className="font-serif text-4xl sm:text-5xl tracking-tight leading-[1.05]">
+                The principles that <span className="italic">guide every engagement.</span>
+              </h2>
+            </div>
           </div>
-          <div className="mt-12 flex flex-wrap gap-3">
+          <div className="grid md:grid-cols-2 gap-px bg-border border border-border">
+            {principles.map((r) => (
+              <div key={r.n} className="bg-background p-10">
+                <div className="flex items-baseline gap-4">
+                  <div className="font-serif text-2xl text-accent">{r.n}</div>
+                  <h3 className="font-serif text-2xl tracking-tight">{r.title}</h3>
+                </div>
+                <p className="mt-5 text-muted-foreground leading-relaxed">{r.desc}</p>
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* EXPERTISE / STACK */}
+      <section id="expertise" className="py-28 border-b border-border">
+        <div className="mx-auto max-w-6xl px-6 lg:px-10">
+          <div className="grid lg:grid-cols-12 gap-12 mb-12">
+            <div className="lg:col-span-4">
+              <div className="text-[11px] tracking-[0.32em] text-muted-foreground flex items-center gap-3">
+                <Minus className="h-3 w-8 text-accent" /> 04 · EXPERTISE
+              </div>
+            </div>
+            <div className="lg:col-span-8">
+              <h2 className="font-serif text-4xl sm:text-5xl tracking-tight leading-[1.05]">
+                A production-proven <span className="italic">technology stack.</span>
+              </h2>
+              <p className="mt-6 text-muted-foreground max-w-xl">
+                Selected for reliability, observability and long-term maintainability — not novelty.
+              </p>
+            </div>
+          </div>
+          <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 border-t border-l border-border">
             {stack.map((tech) => (
-              <span key={tech} className="px-5 py-2.5 rounded-full border border-border bg-card text-sm font-medium hover:border-primary hover:text-primary transition cursor-default">
+              <div key={tech} className="border-r border-b border-border px-6 py-6 text-sm font-medium tracking-wide hover:bg-secondary/60 transition">
                 {tech}
-              </span>
+              </div>
             ))}
-          </div>
-
-          <div className="mt-20 rounded-3xl border border-border bg-card p-10 sm:p-14 text-center">
-            <h3 className="text-2xl sm:text-3xl font-bold tracking-tight">
-              We develop with the AI that leads the industry
-            </h3>
-            <p className="mt-3 text-muted-foreground max-w-2xl mx-auto">
-              Every project is powered by the most advanced artificial intelligence platforms on the market.
-            </p>
-            <div className="mt-8 flex flex-wrap justify-center gap-6 text-sm font-medium text-muted-foreground">
-              {["GitHub Copilot", "Google Gemini", "OpenAI", "Anthropic"].map((p) => (
-                <span key={p} className="px-5 py-2 rounded-lg bg-secondary text-secondary-foreground">{p}</span>
-              ))}
-            </div>
           </div>
         </div>
       </section>
 
-      {/* CTA */}
-      <section className="py-24 border-t border-border" style={{ background: "var(--gradient-hero)" }}>
-        <div className="mx-auto max-w-4xl px-6 text-center">
-          <img src={logoDark} alt="" className="mx-auto h-16 w-16 rounded-xl mb-6" />
-          <h2 className="text-4xl sm:text-5xl font-bold tracking-tight">
-            Is your system ready <br className="hidden sm:block" /> for what is coming?
+      {/* CTA DARK */}
+      <section className="py-32 bg-[color:var(--navy-deep)] text-[color:var(--primary-foreground)]">
+        <div className="mx-auto max-w-4xl px-6 lg:px-10 text-center">
+          <div className="text-[11px] tracking-[0.32em] opacity-60 flex items-center justify-center gap-3">
+            <Minus className="h-3 w-8 text-accent" /> A CONVERSATION TO BEGIN
+          </div>
+          <h2 className="font-serif mt-10 text-4xl sm:text-5xl lg:text-6xl leading-[1.05] tracking-tight">
+            Is your platform ready<br />
+            <span className="italic text-accent">for what is coming?</span>
           </h2>
-          <p className="mt-5 text-lg text-muted-foreground">
-            Let's evaluate your platform's architecture together — at no cost.
+          <p className="mt-8 text-lg opacity-75 max-w-xl mx-auto">
+            We offer a complimentary architecture review for institutions evaluating the resilience of their mission-critical systems.
           </p>
-          <a href="#contact" className="mt-8 inline-flex items-center gap-2 rounded-full bg-[image:var(--gradient-primary)] px-7 py-3.5 text-sm font-medium text-primary-foreground shadow-[var(--shadow-glow)] hover:opacity-90 transition">
-            Request free architecture analysis <ArrowRight className="h-4 w-4" />
+          <a href="#contact" className="mt-12 inline-flex items-center gap-3 bg-background text-foreground px-8 py-4 text-[13px] tracking-wider uppercase font-medium hover:bg-accent hover:text-accent-foreground transition">
+            Request the review <ArrowUpRight className="h-4 w-4" />
           </a>
         </div>
       </section>
 
       {/* CONTACT */}
-      <section id="contact" className="py-24">
-        <div className="mx-auto max-w-7xl px-6 grid lg:grid-cols-2 gap-12">
-          <div>
-            <div className="text-sm uppercase tracking-[0.2em] text-primary">Contact</div>
-            <h2 className="mt-3 text-4xl sm:text-5xl font-bold tracking-tight">
-              Let's talk about <br /> <span className="text-muted-foreground">your project.</span>
+      <section id="contact" className="py-28 border-b border-border">
+        <div className="mx-auto max-w-6xl px-6 lg:px-10 grid lg:grid-cols-12 gap-12">
+          <div className="lg:col-span-5">
+            <div className="text-[11px] tracking-[0.32em] text-muted-foreground flex items-center gap-3">
+              <Minus className="h-3 w-8 text-accent" /> 05 · CONTACT
+            </div>
+            <h2 className="font-serif mt-8 text-4xl sm:text-5xl tracking-tight leading-[1.05]">
+              Tell us about <span className="italic">your system.</span>
             </h2>
-            <p className="mt-5 text-muted-foreground max-w-md">
-              Tell us about your challenge. We respond in under 24 hours with an initial analysis proposal at no cost.
+            <p className="mt-6 text-muted-foreground leading-relaxed max-w-md">
+              We respond within one business day with a brief analysis and a proposal for a discovery call — at no cost.
             </p>
-            <div className="mt-10 space-y-4">
-              <a href="mailto:projects@verticetechgroup.com" className="flex items-start gap-4 p-4 rounded-xl border border-border bg-card hover:border-primary/50 transition">
-                <Mail className="h-5 w-5 text-primary mt-0.5" />
+            <div className="mt-12 space-y-6">
+              <div className="flex items-start gap-4 pb-6 border-b border-border">
+                <Mail className="h-5 w-5 text-accent mt-1" strokeWidth={1.25} />
                 <div>
-                  <div className="text-xs uppercase tracking-wider text-muted-foreground">Email</div>
-                  <div className="font-medium">projects@verticetechgroup.com</div>
+                  <div className="text-[11px] tracking-[0.24em] uppercase text-muted-foreground">Email</div>
+                  <div className="mt-1 font-medium">projects@verticetechgroup.com</div>
                 </div>
-              </a>
-              <a href="#" className="flex items-start gap-4 p-4 rounded-xl border border-border bg-card hover:border-primary/50 transition">
-                <MessageCircle className="h-5 w-5 text-primary mt-0.5" />
+              </div>
+              <div className="flex items-start gap-4 pb-6 border-b border-border">
+                <Phone className="h-5 w-5 text-accent mt-1" strokeWidth={1.25} />
                 <div>
-                  <div className="text-xs uppercase tracking-wider text-muted-foreground">WhatsApp</div>
-                  <div className="font-medium">Contact us now</div>
+                  <div className="text-[11px] tracking-[0.24em] uppercase text-muted-foreground">Direct line</div>
+                  <div className="mt-1 font-medium">By appointment</div>
                 </div>
-              </a>
-              <div className="flex items-start gap-4 p-4 rounded-xl border border-border bg-card">
-                <MapPin className="h-5 w-5 text-primary mt-0.5" />
+              </div>
+              <div className="flex items-start gap-4">
+                <MapPin className="h-5 w-5 text-accent mt-1" strokeWidth={1.25} />
                 <div>
-                  <div className="text-xs uppercase tracking-wider text-muted-foreground">Location</div>
-                  <div className="font-medium">United States 🇺🇸</div>
+                  <div className="text-[11px] tracking-[0.24em] uppercase text-muted-foreground">Office</div>
+                  <div className="mt-1 font-medium">United States</div>
                 </div>
               </div>
             </div>
           </div>
-          <form onSubmit={(e) => e.preventDefault()} className="rounded-2xl border border-border bg-card p-8 space-y-5">
-            <div className="grid sm:grid-cols-2 gap-5">
+          <form onSubmit={(e) => e.preventDefault()} className="lg:col-span-7 bg-secondary/40 border border-border p-10 space-y-7">
+            <div className="grid sm:grid-cols-2 gap-7">
               <div>
-                <label className="text-xs uppercase tracking-wider text-muted-foreground">Name *</label>
-                <input required className="mt-2 w-full rounded-lg bg-background border border-input px-4 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-ring" />
+                <label className="text-[11px] tracking-[0.24em] uppercase text-muted-foreground">Full name *</label>
+                <input required className="mt-3 w-full bg-transparent border-0 border-b border-border focus:border-foreground py-2 text-sm focus:outline-none transition" />
               </div>
               <div>
-                <label className="text-xs uppercase tracking-wider text-muted-foreground">Phone</label>
-                <input className="mt-2 w-full rounded-lg bg-background border border-input px-4 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-ring" />
+                <label className="text-[11px] tracking-[0.24em] uppercase text-muted-foreground">Company</label>
+                <input className="mt-3 w-full bg-transparent border-0 border-b border-border focus:border-foreground py-2 text-sm focus:outline-none transition" />
+              </div>
+            </div>
+            <div className="grid sm:grid-cols-2 gap-7">
+              <div>
+                <label className="text-[11px] tracking-[0.24em] uppercase text-muted-foreground">Email *</label>
+                <input required type="email" className="mt-3 w-full bg-transparent border-0 border-b border-border focus:border-foreground py-2 text-sm focus:outline-none transition" />
+              </div>
+              <div>
+                <label className="text-[11px] tracking-[0.24em] uppercase text-muted-foreground">Phone</label>
+                <input className="mt-3 w-full bg-transparent border-0 border-b border-border focus:border-foreground py-2 text-sm focus:outline-none transition" />
               </div>
             </div>
             <div>
-              <label className="text-xs uppercase tracking-wider text-muted-foreground">Email *</label>
-              <input required type="email" className="mt-2 w-full rounded-lg bg-background border border-input px-4 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-ring" />
-            </div>
-            <div>
-              <label className="text-xs uppercase tracking-wider text-muted-foreground">Main need</label>
-              <select className="mt-2 w-full rounded-lg bg-background border border-input px-4 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-ring">
+              <label className="text-[11px] tracking-[0.24em] uppercase text-muted-foreground">Area of interest</label>
+              <select className="mt-3 w-full bg-transparent border-0 border-b border-border focus:border-foreground py-2 text-sm focus:outline-none transition">
                 <option>Transactional systems</option>
-                <option>High availability</option>
+                <option>High availability architecture</option>
                 <option>Enterprise integration</option>
                 <option>Real-time processing</option>
                 <option>Security &amp; compliance</option>
@@ -285,38 +296,54 @@ function Index() {
               </select>
             </div>
             <div>
-              <label className="text-xs uppercase tracking-wider text-muted-foreground">Brief description</label>
-              <textarea rows={4} className="mt-2 w-full rounded-lg bg-background border border-input px-4 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-ring resize-none" />
+              <label className="text-[11px] tracking-[0.24em] uppercase text-muted-foreground">Brief description</label>
+              <textarea rows={4} className="mt-3 w-full bg-transparent border-0 border-b border-border focus:border-foreground py-2 text-sm focus:outline-none transition resize-none" />
             </div>
-            <button type="submit" className="w-full inline-flex items-center justify-center gap-2 rounded-full bg-[image:var(--gradient-primary)] px-6 py-3 text-sm font-medium text-primary-foreground shadow-[var(--shadow-glow)] hover:opacity-90 transition">
-              Send message <ArrowRight className="h-4 w-4" />
+            <button type="submit" className="inline-flex items-center gap-3 bg-primary text-primary-foreground px-7 py-4 text-[13px] tracking-wider uppercase font-medium hover:bg-primary/90 transition">
+              Send inquiry <ArrowUpRight className="h-4 w-4" />
             </button>
           </form>
         </div>
       </section>
 
       {/* FOOTER */}
-      <footer className="border-t border-border bg-card/40">
-        <div className="mx-auto max-w-7xl px-6 py-12 flex flex-col md:flex-row items-center justify-between gap-6">
-          <div className="flex items-center gap-3">
-            <img src={logoLight} alt="" className="h-10 w-10 rounded-lg bg-white p-1" />
-            <div>
-              <div className="font-semibold text-sm">VERTICE TECH GROUP LLC</div>
-              <div className="text-xs text-muted-foreground">Mission-critical software · USA</div>
+      <footer className="bg-[color:var(--navy-deep)] text-[color:var(--primary-foreground)]">
+        <div className="mx-auto max-w-6xl px-6 lg:px-10 py-16">
+          <div className="grid md:grid-cols-12 gap-10 pb-12 border-b border-white/10">
+            <div className="md:col-span-5">
+              <div className="flex items-center gap-3">
+                <img src={logoLight} alt="" className="h-12 w-12 object-contain" />
+                <div className="leading-tight">
+                  <div className="text-[11px] tracking-[0.32em] opacity-60">VERTICE</div>
+                  <div className="text-sm font-semibold tracking-[0.18em]">TECH GROUP LLC</div>
+                </div>
+              </div>
+              <p className="mt-6 text-sm opacity-70 max-w-sm leading-relaxed">
+                Mission-critical software engineering for institutions that operate where downtime is not an option.
+              </p>
+            </div>
+            <div className="md:col-span-3">
+              <div className="text-[11px] tracking-[0.24em] uppercase opacity-60">Practice</div>
+              <ul className="mt-5 space-y-3 text-sm">
+                <li><a href="#capabilities" className="opacity-80 hover:opacity-100">Capabilities</a></li>
+                <li><a href="#approach" className="opacity-80 hover:opacity-100">Approach</a></li>
+                <li><a href="#expertise" className="opacity-80 hover:opacity-100">Expertise</a></li>
+              </ul>
+            </div>
+            <div className="md:col-span-4">
+              <div className="text-[11px] tracking-[0.24em] uppercase opacity-60">Office</div>
+              <ul className="mt-5 space-y-3 text-sm opacity-80">
+                <li>United States</li>
+                <li>projects@verticetechgroup.com</li>
+              </ul>
             </div>
           </div>
-          <div className="text-xs text-muted-foreground">
-            © {new Date().getFullYear()} Vertice Tech Group LLC. All rights reserved.
+          <div className="pt-8 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 text-[11px] tracking-[0.24em] uppercase opacity-60">
+            <div>© {new Date().getFullYear()} Vertice Tech Group LLC</div>
+            <div>All rights reserved</div>
           </div>
         </div>
       </footer>
-
-      <style>{`
-        @keyframes scroll {
-          from { transform: translateX(0); }
-          to { transform: translateX(-50%); }
-        }
-      `}</style>
     </div>
   );
 }
