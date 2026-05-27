@@ -601,6 +601,40 @@
 
     /* ── Smooth scroll offset for fixed nav ────────────────────── */
     section[id], #top { scroll-margin-top: 80px; }
+
+    /* ── Formspree feedback ────────────────────────────────────── */
+    [data-fs-success] {
+      display: none;
+      padding: 1.25rem 1.5rem;
+      background: oklch(0.93 0.05 150 / 0.15);
+      border: 1px solid oklch(0.65 0.12 150);
+      color: oklch(0.35 0.1 150);
+      font-size: 14px;
+      line-height: 1.6;
+    }
+    [data-fs-success].visible { display: block; }
+
+    [data-fs-error]:not([data-fs-error=""]) {
+      display: block;
+      margin-top: 0.35rem;
+      font-size: 11px;
+      color: oklch(0.55 0.2 27);
+      letter-spacing: 0.02em;
+    }
+    .form-error-banner {
+      display: none;
+      padding: 1rem 1.25rem;
+      background: oklch(0.97 0.02 27 / 0.15);
+      border: 1px solid oklch(0.7 0.15 27);
+      color: oklch(0.45 0.18 27);
+      font-size: 13px;
+    }
+    .form-error-banner.visible { display: block; }
+
+    [data-fs-submit-btn]:disabled {
+      opacity: 0.6;
+      cursor: not-allowed;
+    }
   </style>
 </head>
 <body>
@@ -897,30 +931,41 @@
         </div>
 
         <div class="contact-form">
-          <form onsubmit="return false;">
+
+          <!-- Success message (shown after submit) -->
+          <div data-fs-success>
+            ✓ &nbsp;Your inquiry has been received. We will respond within one business day.
+          </div>
+
+          <!-- Form-level error banner -->
+          <div data-fs-error="" class="form-error-banner"></div>
+
+          <form id="contact-form">
             <div class="form-row">
               <div class="field">
-                <label>Full name *</label>
-                <input type="text" required />
+                <label for="fs-name">Full name *</label>
+                <input id="fs-name" type="text" name="name" required data-fs-field />
+                <span data-fs-error="name"></span>
               </div>
               <div class="field">
-                <label>Company</label>
-                <input type="text" />
+                <label for="fs-company">Company</label>
+                <input id="fs-company" type="text" name="company" />
               </div>
             </div>
             <div class="form-row">
               <div class="field">
-                <label>Email *</label>
-                <input type="email" required />
+                <label for="fs-email">Email *</label>
+                <input id="fs-email" type="email" name="email" required data-fs-field />
+                <span data-fs-error="email"></span>
               </div>
               <div class="field">
-                <label>Phone</label>
-                <input type="tel" />
+                <label for="fs-phone">Phone</label>
+                <input id="fs-phone" type="tel" name="phone" />
               </div>
             </div>
             <div class="field">
-              <label>Area of interest</label>
-              <select>
+              <label for="fs-interest">Area of interest</label>
+              <select id="fs-interest" name="interest">
                 <option>Transactional systems</option>
                 <option>High availability architecture</option>
                 <option>Enterprise integration</option>
@@ -930,10 +975,11 @@
               </select>
             </div>
             <div class="field">
-              <label>Brief description</label>
-              <textarea rows="4"></textarea>
+              <label for="fs-message">Brief description</label>
+              <textarea id="fs-message" name="message" rows="4" data-fs-field></textarea>
+              <span data-fs-error="message"></span>
             </div>
-            <button type="submit" class="btn-primary">
+            <button type="submit" class="btn-primary" data-fs-submit-btn>
               Send inquiry
               <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M7 7h10v10"/><path d="M7 17 17 7"/></svg>
             </button>
@@ -980,6 +1026,13 @@
       </div>
     </div>
   </footer>
+
+  <!-- Formspree Ajax integration -->
+  <script>
+    window.formspree = window.formspree || function () { (formspree.q = formspree.q || []).push(arguments); };
+    formspree('initForm', { formElement: '#contact-form', formId: 'mwvzwweo' });
+  </script>
+  <script src="https://unpkg.com/@formspree/ajax@1" defer></script>
 
 </body>
 </html>
