@@ -682,6 +682,39 @@
       .btn-light { width: 100%; justify-content: center; }
     }
 
+    /* ── Scroll animations ─────────────────────────────────────── */
+    @media (prefers-reduced-motion: no-preference) {
+      .reveal-item {
+        opacity: 0;
+        transform: translateY(28px);
+        transition: opacity 0.7s cubic-bezier(0.22, 1, 0.36, 1),
+                    transform 0.7s cubic-bezier(0.22, 1, 0.36, 1);
+      }
+      .reveal-item.is-visible {
+        opacity: 1;
+        transform: none;
+      }
+      .reveal-item[data-stagger="1"] { transition-delay: 0.07s; }
+      .reveal-item[data-stagger="2"] { transition-delay: 0.14s; }
+      .reveal-item[data-stagger="3"] { transition-delay: 0.21s; }
+      .reveal-item[data-stagger="4"] { transition-delay: 0.28s; }
+      .reveal-item[data-stagger="5"] { transition-delay: 0.35s; }
+      .reveal-item[data-stagger="6"] { transition-delay: 0.42s; }
+
+      /* Section label: opacity fade + line draw */
+      .section-label {
+        opacity: 0;
+        transition: opacity 0.45s ease;
+      }
+      .section-label.is-visible { opacity: 1; }
+      .section-label .line-svg path {
+        stroke-dasharray: 20;
+        stroke-dashoffset: 20;
+        transition: stroke-dashoffset 0.55s ease 0.15s;
+      }
+      .section-label.is-visible .line-svg path { stroke-dashoffset: 0; }
+    }
+
     /* ── Small phone fixes (< 400px) ───────────────────────────── */
     @media (max-width: 399px) {
       .container { padding-inline: 1rem; }
@@ -1125,6 +1158,99 @@
       </div>
     </div>
   </footer>
+
+  <!-- Lenis smooth scroll -->
+  <script src="https://cdn.jsdelivr.net/npm/lenis@1.1.14/dist/lenis.min.js"></script>
+  <!-- CountUp.js -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/countup.js/2.8.0/countUp.umd.min.js"></script>
+
+  <!-- Scroll effects -->
+  <script>
+    // ── 1. Smooth scroll (Lenis) ───────────────────────────────
+    const lenis = new Lenis({ duration: 1.2, easing: t => Math.min(1, 1.001 - Math.pow(2, -10 * t)) });
+    function raf(time) { lenis.raf(time); requestAnimationFrame(raf); }
+    requestAnimationFrame(raf);
+
+    // Anchor links with Lenis
+    document.querySelectorAll('a[href^="#"]').forEach(a => {
+      a.addEventListener('click', e => {
+        const target = document.querySelector(a.getAttribute('href'));
+        if (!target) return;
+        e.preventDefault();
+        lenis.scrollTo(target, { offset: -80, duration: 1.4 });
+      });
+    });
+
+    // ── 2. Reveal on scroll (Intersection Observer) ────────────
+    const staggerEls = new Set(['.stat-item', '.service-card', '.principle-card', '.stack-item', '.contact-detail-item']);
+    const allSelectors = [
+      '.hero-tag', 'h1.hero-title', '.hero-desc-grid p', '.hero-ctas',
+      '.stat-item', '.section-label',
+      '.intro-grid h2', '.intro-grid .content-col p',
+      '.caps-header h2', '.service-card',
+      '.approach-header h2', '.principle-card',
+      '.expertise-header h2', '.expertise-header .title-col p',
+      '.stack-item',
+      '#cta-dark h2', '#cta-dark p', '#cta-dark .btn-light',
+      '.contact-info h2', '.contact-info > p',
+      '.contact-detail-item', '.contact-form form',
+    ];
+
+    const parentGroups = new Map();
+
+    allSelectors.forEach(sel => {
+      document.querySelectorAll(sel).forEach(el => {
+        el.classList.add('reveal-item');
+        if (sel === '.section-label') {
+          const svg = el.querySelector('svg');
+          if (svg) svg.classList.add('line-svg');
+        }
+        if (staggerEls.has(sel)) {
+          const parent = el.parentElement;
+          if (!parentGroups.has(parent)) parentGroups.set(parent, []);
+          parentGroups.get(parent).push(el);
+        }
+      });
+    });
+
+    parentGroups.forEach(els => {
+      els.forEach((el, i) => { if (i > 0) el.dataset.stagger = Math.min(i, 6); });
+    });
+
+    const revealObs = new IntersectionObserver(entries => {
+      entries.forEach(({ target, isIntersecting }) => {
+        if (isIntersecting) { target.classList.add('is-visible'); revealObs.unobserve(target); }
+      });
+    }, { threshold: 0.08, rootMargin: '0px 0px -40px 0px' });
+
+    document.querySelectorAll('.reveal-item').forEach(el => revealObs.observe(el));
+
+    // ── 3. Counter animation (stats) ──────────────────────────
+    const statEls   = document.querySelectorAll('.stat-value');
+    const statCfgs  = [
+      { end: 99.47, decimals: 2, prefix: '',   suffix: '%'  },
+      null,
+      { end: 50,    decimals: 0, prefix: '< ', suffix: ' ms' },
+      { end: 100,   decimals: 0, prefix: '',   suffix: '%'  },
+    ];
+
+    const cntObs = new IntersectionObserver(entries => {
+      entries.forEach(({ target, isIntersecting }) => {
+        if (!isIntersecting) return;
+        const idx = [...statEls].indexOf(target);
+        const cfg = statCfgs[idx];
+        if (!cfg) return;
+        const cu = new countUp.CountUp(target, cfg.end, {
+          startVal: 0, decimalPlaces: cfg.decimals, duration: 2.2,
+          prefix: cfg.prefix, suffix: cfg.suffix, useEasing: true,
+        });
+        if (!cu.error) cu.start();
+        cntObs.unobserve(target);
+      });
+    }, { threshold: 0.6 });
+
+    statEls.forEach(el => cntObs.observe(el));
+  </script>
 
   <!-- Mobile nav toggle -->
   <script>
