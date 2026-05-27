@@ -723,6 +723,78 @@
       .section-label { font-size: 10px; letter-spacing: 0.18em; }
     }
 
+    /* ── Custom cursor (desktop only) ─────────────────────────── */
+    @media (pointer: fine) {
+      * { cursor: none !important; }
+
+      .cursor-dot {
+        position: fixed;
+        top: 0; left: 0;
+        width: 8px; height: 8px;
+        border-radius: 50%;
+        background: var(--foreground);
+        pointer-events: none;
+        z-index: 9999;
+        transform: translate(-50%, -50%);
+        transition: width 0.22s ease, height 0.22s ease,
+                    background 0.22s ease, opacity 0.3s ease;
+        will-change: left, top;
+      }
+      .cursor-ring {
+        position: fixed;
+        top: 0; left: 0;
+        width: 38px; height: 38px;
+        border-radius: 50%;
+        border: 1px solid oklch(0.18 0.03 260 / 0.3);
+        pointer-events: none;
+        z-index: 9998;
+        transform: translate(-50%, -50%);
+        transition: width 0.35s ease, height 0.35s ease,
+                    border-color 0.25s ease;
+        will-change: left, top;
+      }
+      .cursor-dot.is-hovering {
+        width: 5px; height: 5px;
+        background: var(--accent);
+      }
+      .cursor-ring.is-hovering {
+        width: 56px; height: 56px;
+        border-color: var(--accent);
+        border-width: 1.5px;
+      }
+      .cursor-dot.is-clicking { transform: translate(-50%,-50%) scale(0.7); }
+    }
+
+    /* ── Marquee (tech stack) ──────────────────────────────────── */
+    .marquee-wrapper {
+      overflow: hidden;
+      border-top: 1px solid var(--border);
+    }
+    .marquee-track {
+      display: flex;
+      width: max-content;
+      animation: marquee-scroll 30s linear infinite;
+    }
+    .marquee-track:hover { animation-play-state: paused; }
+    .marquee-item {
+      border-right: 1px solid var(--border);
+      padding: 1.4rem 2rem;
+      font-size: 13px;
+      font-weight: 500;
+      letter-spacing: 0.06em;
+      white-space: nowrap;
+      flex-shrink: 0;
+      transition: background 0.2s ease, color 0.2s ease;
+    }
+    .marquee-item:hover {
+      background: var(--foreground);
+      color: var(--background);
+    }
+    @keyframes marquee-scroll {
+      from { transform: translateX(0); }
+      to   { transform: translateX(-50%); }
+    }
+
     /* ── Formspree feedback ────────────────────────────────────── */
     [data-fs-success] {
       display: none;
@@ -1161,6 +1233,110 @@
 
   <!-- CountUp.js -->
   <script src="https://cdnjs.cloudflare.com/ajax/libs/countup.js/2.8.0/countUp.umd.min.js"></script>
+
+  <!-- Premium effects: cursor, scramble, magnetic, marquee -->
+  <script>
+    /* ── Custom cursor ───────────────────────────────────────── */
+    if (window.matchMedia('(pointer: fine)').matches) {
+      const dot  = Object.assign(document.createElement('div'), { className: 'cursor-dot'  });
+      const ring = Object.assign(document.createElement('div'), { className: 'cursor-ring' });
+      document.body.append(dot, ring);
+
+      let mx = -100, my = -100, rx = -100, ry = -100;
+
+      document.addEventListener('mousemove', e => {
+        mx = e.clientX; my = e.clientY;
+        dot.style.left = mx + 'px';
+        dot.style.top  = my + 'px';
+      });
+      document.addEventListener('mousedown', () => dot.classList.add('is-clicking'));
+      document.addEventListener('mouseup',   () => dot.classList.remove('is-clicking'));
+
+      (function animateRing() {
+        rx += (mx - rx) * 0.11;
+        ry += (my - ry) * 0.11;
+        ring.style.left = rx + 'px';
+        ring.style.top  = ry + 'px';
+        requestAnimationFrame(animateRing);
+      })();
+
+      document.addEventListener('mouseover', e => {
+        if (e.target.closest('a, button, .service-card, .principle-card, .marquee-item, .stack-item, input, select, textarea')) {
+          dot.classList.add('is-hovering');
+          ring.classList.add('is-hovering');
+        }
+      });
+      document.addEventListener('mouseout', e => {
+        if (e.target.closest('a, button, .service-card, .principle-card, .marquee-item, .stack-item, input, select, textarea')) {
+          dot.classList.remove('is-hovering');
+          ring.classList.remove('is-hovering');
+        }
+      });
+    }
+
+    /* ── Text scramble on hero H1 ────────────────────────────── */
+    (function() {
+      const CHARS = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ·—/\\';
+      function scramble(node, original, delay) {
+        const steps = 22, duration = 1100;
+        let frame = 0;
+        setTimeout(() => {
+          const iv = setInterval(() => {
+            const progress = frame / steps;
+            node.textContent = original.split('').map((ch, i) => {
+              if (ch === ' ' || ch === '\n') return ch;
+              if (i < progress * original.length) return ch;
+              return CHARS[Math.floor(Math.random() * CHARS.length)];
+            }).join('');
+            if (++frame > steps) { node.textContent = original; clearInterval(iv); }
+          }, duration / steps);
+        }, delay);
+      }
+
+      const h1 = document.querySelector('h1.hero-title');
+      if (h1) {
+        const textNode = [...h1.childNodes].find(n => n.nodeType === 3 && n.textContent.trim());
+        if (textNode) scramble(textNode, textNode.textContent, 250);
+      }
+    })();
+
+    /* ── Magnetic buttons ────────────────────────────────────── */
+    if (window.matchMedia('(pointer: fine)').matches) {
+      document.querySelectorAll('.btn-primary, .btn-outline, .btn-light').forEach(btn => {
+        btn.addEventListener('mousemove', e => {
+          const r = btn.getBoundingClientRect();
+          const x = (e.clientX - r.left - r.width  / 2) * 0.18;
+          const y = (e.clientY - r.top  - r.height / 2) * 0.22;
+          btn.style.transform = `translate(${x}px, ${y}px)`;
+        });
+        btn.addEventListener('mouseleave', () => { btn.style.transform = ''; });
+      });
+    }
+
+    /* ── Marquee tech stack ──────────────────────────────────── */
+    (function() {
+      const grid = document.querySelector('.stack-grid');
+      if (!grid) return;
+
+      const items = [...grid.querySelectorAll('.stack-item')].map(el => el.textContent.trim());
+      const doubled = [...items, ...items];
+
+      const wrapper = document.createElement('div');
+      wrapper.className = 'marquee-wrapper';
+      const track = document.createElement('div');
+      track.className = 'marquee-track';
+
+      doubled.forEach(text => {
+        const el = document.createElement('div');
+        el.className = 'marquee-item reveal-item';
+        el.textContent = text;
+        track.appendChild(el);
+      });
+
+      wrapper.appendChild(track);
+      grid.replaceWith(wrapper);
+    })();
+  </script>
 
   <!-- Scroll effects -->
   <script>
