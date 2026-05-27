@@ -1159,29 +1159,12 @@
     </div>
   </footer>
 
-  <!-- Lenis smooth scroll -->
-  <script src="https://cdn.jsdelivr.net/npm/lenis@1.1.14/dist/lenis.min.js"></script>
   <!-- CountUp.js -->
   <script src="https://cdnjs.cloudflare.com/ajax/libs/countup.js/2.8.0/countUp.umd.min.js"></script>
 
   <!-- Scroll effects -->
   <script>
-    // ── 1. Smooth scroll (Lenis) ───────────────────────────────
-    const lenis = new Lenis({ duration: 1.2, easing: t => Math.min(1, 1.001 - Math.pow(2, -10 * t)) });
-    function raf(time) { lenis.raf(time); requestAnimationFrame(raf); }
-    requestAnimationFrame(raf);
-
-    // Anchor links with Lenis
-    document.querySelectorAll('a[href^="#"]').forEach(a => {
-      a.addEventListener('click', e => {
-        const target = document.querySelector(a.getAttribute('href'));
-        if (!target) return;
-        e.preventDefault();
-        lenis.scrollTo(target, { offset: -80, duration: 1.4 });
-      });
-    });
-
-    // ── 2. Reveal on scroll (Intersection Observer) ────────────
+    // ── 1. Reveal on scroll (Intersection Observer) ────────────
     const staggerEls = new Set(['.stat-item', '.service-card', '.principle-card', '.stack-item', '.contact-detail-item']);
     const allSelectors = [
       '.hero-tag', 'h1.hero-title', '.hero-desc-grid p', '.hero-ctas',
