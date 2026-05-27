@@ -603,6 +603,93 @@
     /* ── Smooth scroll offset for fixed nav ────────────────────── */
     section[id], #top { scroll-margin-top: 80px; }
 
+    /* ── Hamburger button ──────────────────────────────────────── */
+    .nav-hamburger {
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      gap: 5px;
+      cursor: pointer;
+      padding: 0.4rem;
+      background: none;
+      border: none;
+      width: 36px;
+      height: 36px;
+    }
+    .nav-hamburger span {
+      display: block;
+      width: 22px;
+      height: 2px;
+      background: var(--foreground);
+      transition: transform 0.2s, opacity 0.2s;
+      transform-origin: center;
+    }
+    .nav-hamburger.open span:nth-child(1) { transform: translateY(7px) rotate(45deg); }
+    .nav-hamburger.open span:nth-child(2) { opacity: 0; }
+    .nav-hamburger.open span:nth-child(3) { transform: translateY(-7px) rotate(-45deg); }
+    @media (min-width: 640px) { .nav-hamburger { display: none; } }
+
+    /* ── Mobile nav drawer ─────────────────────────────────────── */
+    .nav-mobile {
+      display: none;
+      position: fixed;
+      top: 80px; left: 0; right: 0;
+      background: var(--background);
+      border-bottom: 1px solid var(--border);
+      padding: 1.5rem;
+      flex-direction: column;
+      z-index: 49;
+    }
+    .nav-mobile.open { display: flex; }
+    .nav-mobile a {
+      font-size: 15px;
+      font-weight: 500;
+      color: var(--foreground);
+      padding: 1rem 0;
+      border-bottom: 1px solid var(--border);
+      letter-spacing: 0.04em;
+    }
+    .nav-mobile a:last-child { border-bottom: none; }
+    @media (min-width: 640px) { .nav-mobile { display: none !important; } }
+
+    /* ── Mobile responsive fixes ───────────────────────────────── */
+    @media (max-width: 767px) {
+
+      /* Hero */
+      #top { padding-top: 6.5rem; padding-bottom: 3.5rem; }
+      h1.hero-title { font-size: clamp(2.2rem, 9vw, 3rem); }
+      .hero-ctas { flex-direction: column; }
+      .btn-primary, .btn-outline { width: 100%; justify-content: center; }
+      .stat-item { padding: 1.25rem; }
+      .stat-value { font-size: 1.75rem; }
+      .stats-grid { margin-top: 3rem; }
+
+      /* Sections */
+      #intro, #capabilities, #approach, #expertise, #contact { padding-block: 3.5rem; }
+      #cta-dark { padding-block: 4rem; }
+      .caps-header, .approach-header, .expertise-header { margin-bottom: 2rem; }
+
+      /* Cards */
+      .service-card { padding: 1.5rem; }
+      .principle-card { padding: 1.5rem; }
+      .stack-item { padding: 1rem; font-size: 13px; }
+
+      /* Contact form */
+      .contact-form form { padding: 1.25rem; }
+
+      /* Footer */
+      .footer-inner { padding-block: 2.5rem; }
+      .btn-light { width: 100%; justify-content: center; }
+    }
+
+    /* ── Small phone fixes (< 400px) ───────────────────────────── */
+    @media (max-width: 399px) {
+      .container { padding-inline: 1rem; }
+      h1.hero-title { font-size: 2rem; }
+      .hero-tag { font-size: 10px; letter-spacing: 0.18em; }
+      .section-label { font-size: 10px; letter-spacing: 0.18em; }
+    }
+
     /* ── Formspree feedback ────────────────────────────────────── */
     [data-fs-success] {
       display: none;
@@ -660,8 +747,19 @@
         Start a conversation
         <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M7 7h10v10"/><path d="M7 17 17 7"/></svg>
       </a>
+      <button class="nav-hamburger" id="hamburger" aria-label="Menu">
+        <span></span><span></span><span></span>
+      </button>
     </nav>
   </header>
+
+  <!-- Mobile nav drawer -->
+  <nav class="nav-mobile" id="mobile-nav">
+    <a href="#capabilities" onclick="closeMobileNav()">Capabilities</a>
+    <a href="#approach" onclick="closeMobileNav()">Approach</a>
+    <a href="#expertise" onclick="closeMobileNav()">Expertise</a>
+    <a href="#contact" onclick="closeMobileNav()">Contact → Start a conversation</a>
+  </nav>
 
   <!-- ═══════════════════════════════ HERO ══════════════════════════════ -->
   <section id="top">
@@ -1027,6 +1125,20 @@
       </div>
     </div>
   </footer>
+
+  <!-- Mobile nav toggle -->
+  <script>
+    const hamburger = document.getElementById('hamburger');
+    const mobileNav = document.getElementById('mobile-nav');
+    hamburger.addEventListener('click', () => {
+      hamburger.classList.toggle('open');
+      mobileNav.classList.toggle('open');
+    });
+    function closeMobileNav() {
+      hamburger.classList.remove('open');
+      mobileNav.classList.remove('open');
+    }
+  </script>
 
   <!-- Formspree Ajax integration -->
   <script>
