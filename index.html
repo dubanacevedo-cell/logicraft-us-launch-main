@@ -895,9 +895,12 @@
       display: flex;
       align-items: center;
       justify-content: center;
+      overflow: hidden;
     }
     .transition-logo {
       opacity: 0;
+      position: relative;
+      z-index: 1;
     }
     .transition-logo img {
       width: 64px;
@@ -905,6 +908,25 @@
       object-fit: contain;
       filter: brightness(0) invert(1);
       opacity: 0.4;
+    }
+    .transition-text {
+      position: absolute;
+      inset: 0;
+      display: flex;
+      align-items: center;
+      overflow: hidden;
+      pointer-events: none;
+    }
+    .transition-text-track {
+      white-space: nowrap;
+      font-family: var(--font-serif);
+      font-size: clamp(5rem, 11vw, 9rem);
+      font-weight: 500;
+      letter-spacing: 0.1em;
+      color: var(--accent);
+      opacity: 0.2;
+      flex-shrink: 0;
+      will-change: transform;
     }
 
     /* ── FAQ page styles (used when Barba swaps container to faq) ── */
@@ -1136,6 +1158,11 @@
 
   <!-- Transition curtain (persists across Barba page navigations) -->
   <div class="transition-curtain" aria-hidden="true">
+    <div class="transition-text">
+      <div class="transition-text-track">
+        VERTICE&nbsp;&nbsp;·&nbsp;&nbsp;TECH&nbsp;&nbsp;GROUP&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;VERTICE&nbsp;&nbsp;·&nbsp;&nbsp;TECH&nbsp;&nbsp;GROUP&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;VERTICE&nbsp;&nbsp;·&nbsp;&nbsp;TECH&nbsp;&nbsp;GROUP&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;VERTICE&nbsp;&nbsp;·&nbsp;&nbsp;TECH&nbsp;&nbsp;GROUP
+      </div>
+    </div>
     <div class="transition-logo">
       <img src="assets/logo-dark.png" alt="" />
     </div>
@@ -1784,9 +1811,12 @@
       },
 
       transitions: [{
-        /* ── LEAVE: navy curtain wipes in from the right ── */
+        /* ── LEAVE: navy curtain wipes in, text scrolls right→left ── */
         async leave() {
           if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+          // Text runs independently — fire and forget, doesn't block leave
+          gsap.set('.transition-text-track', { x: '0%' });
+          gsap.to('.transition-text-track', { x: '-40%', duration: 1.6, ease: 'none' });
           return gsap.timeline()
             .fromTo('.transition-curtain',
               { xPercent: 100 },
@@ -1829,6 +1859,7 @@
           }
 
           tl.set('.transition-curtain', { xPercent: 100 });
+          tl.set('.transition-text-track', { x: '0%' });
 
           return tl;
         },
@@ -1888,6 +1919,8 @@
       if (!curtain || window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
         window.location.assign(dest); return;
       }
+      gsap.set('.transition-text-track', { x: '0%' });
+      gsap.to('.transition-text-track', { x: '-40%', duration: 0.55, ease: 'none' });
       gsap.fromTo(curtain,
         { xPercent: 100 },
         { xPercent: 0, duration: 0.55, ease: 'power4.inOut',
