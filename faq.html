@@ -1036,28 +1036,33 @@
     }
   </script>
 
-  <!-- Home navigation: capture-phase GSAP curtain → full reload ──────── -->
-  <!-- barba.go() has hash-URL issues in multi-page setups; direct       -->
-  <!-- window.location.href after the curtain animation is reliable.     -->
+  <!-- Home navigation: GSAP curtain → navigate with absolute URL ──────── -->
   <script>
-    document.addEventListener('click', function(e) {
-      var link = e.target.closest('a');
-      if (!link) return;
-      var href = link.getAttribute('href') || '';
-      if (href !== '/' && !href.startsWith('/#')) return;
-      e.preventDefault();
-      e.stopImmediatePropagation();
+    function faqGoHome(href) {
+      // Build absolute URL to avoid browser treating /#section as same-page hash
+      var dest = window.location.protocol + '//' + window.location.host + href;
       if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
-        window.location.href = href;
+        window.location.assign(dest);
         return;
       }
-      gsap.fromTo('.transition-curtain',
+      var curtain = document.querySelector('.transition-curtain');
+      if (!curtain) { window.location.assign(dest); return; }
+      gsap.fromTo(curtain,
         { xPercent: 100 },
         { xPercent: 0, duration: 0.55, ease: 'power4.inOut',
-          onComplete: function() { window.location.href = href; }
+          onComplete: function() { window.location.assign(dest); }
         }
       );
-    }, true);
+    }
+
+    document.addEventListener('DOMContentLoaded', function() {
+      document.querySelectorAll('a[href="/"], a[href^="/#"]').forEach(function(link) {
+        link.addEventListener('click', function(e) {
+          e.preventDefault();
+          faqGoHome(link.getAttribute('href'));
+        });
+      });
+    });
   </script>
 
   <!-- Barba.js init (direct access to faq.html) -->
