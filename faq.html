@@ -1,0 +1,1110 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>FAQ — Vertice Tech Group</title>
+  <meta name="description" content="Answers to the most common questions about how Vertice Tech Group works, what we build, and how we engage." />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;1,400;1,500&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet" />
+  <link rel="icon" type="image/png" href="assets/logo-light.png" />
+
+  <style>
+    /* ── Design tokens ─────────────────────────────────────────── */
+    :root {
+      --background:         oklch(0.985 0.004 90);
+      --foreground:         oklch(0.18  0.03  260);
+      --primary:            oklch(0.22  0.05  260);
+      --primary-foreground: oklch(0.985 0.004 90);
+      --secondary:          oklch(0.95  0.008 90);
+      --secondary-foreground: oklch(0.22 0.05 260);
+      --muted-foreground:   oklch(0.48  0.02  260);
+      --accent:             oklch(0.72  0.11  75);
+      --accent-foreground:  oklch(0.18  0.03  260);
+      --border:             oklch(0.9   0.008 90);
+      --navy-deep:          oklch(0.16  0.04  260);
+      --font-serif: "Cormorant Garamond", Georgia, serif;
+    }
+
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    html { scroll-behavior: smooth; }
+
+    body {
+      background-color: var(--background);
+      color: var(--foreground);
+      font-family: "Inter", system-ui, -apple-system, sans-serif;
+      font-size: 16px;
+      line-height: 1.6;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    a { color: inherit; text-decoration: none; }
+    img { display: block; }
+    button, input, select, textarea { font-family: inherit; }
+
+    .serif {
+      font-family: var(--font-serif);
+      font-weight: 500;
+      letter-spacing: -0.01em;
+    }
+
+    /* ── Layout helpers ────────────────────────────────────────── */
+    .container {
+      max-width: 1152px;
+      margin-inline: auto;
+      padding-inline: 1.5rem;
+    }
+    @media (min-width: 1024px) { .container { padding-inline: 2.5rem; } }
+
+    .section-border { border-bottom: 1px solid var(--border); }
+
+    .section-label {
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+      font-size: 11px;
+      letter-spacing: 0.32em;
+      color: var(--muted-foreground);
+      text-transform: uppercase;
+    }
+    .section-label svg { color: var(--accent); flex-shrink: 0; }
+
+    /* ── NAV ───────────────────────────────────────────────────── */
+    header {
+      position: fixed;
+      top: 0; left: 0; right: 0;
+      z-index: 50;
+      background: oklch(0.985 0.004 90 / 0.55);
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+      border-bottom: 1px solid var(--border);
+    }
+    nav {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      height: 80px;
+    }
+    .nav-logo {
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+    }
+    .nav-logo img { height: 40px; width: 40px; object-fit: contain; }
+    .nav-logo-text { line-height: 1.3; }
+    .nav-logo-text .top { font-size: 11px; letter-spacing: 0.32em; color: var(--muted-foreground); }
+    .nav-logo-text .bottom { font-size: 14px; font-weight: 600; letter-spacing: 0.18em; }
+
+    .nav-links {
+      display: none;
+      align-items: center;
+      gap: 2.5rem;
+      list-style: none;
+      font-size: 13px;
+      color: var(--muted-foreground);
+    }
+    .nav-links a { transition: color 0.15s; }
+    .nav-links a:hover { color: var(--foreground); }
+    .nav-links a.active { color: var(--foreground); font-weight: 500; }
+    @media (min-width: 768px) { .nav-links { display: flex; } }
+
+    .nav-cta {
+      display: none;
+      align-items: center;
+      gap: 0.5rem;
+      font-size: 13px;
+      font-weight: 500;
+      border-bottom: 1px solid var(--foreground);
+      padding-bottom: 4px;
+      transition: gap 0.15s;
+    }
+    .nav-cta:hover { gap: 0.75rem; }
+    @media (min-width: 640px) { .nav-cta { display: flex; } }
+
+    /* ── Buttons ───────────────────────────────────────────────── */
+    .btn-primary {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.75rem;
+      background: var(--primary);
+      color: var(--primary-foreground);
+      padding: 1rem 1.75rem;
+      font-size: 13px;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      font-weight: 500;
+      transition: background 0.15s;
+    }
+    .btn-primary:hover { background: oklch(0.26 0.05 260); }
+
+    .btn-outline {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.75rem;
+      border: 1px solid var(--border);
+      padding: 1rem 1.75rem;
+      font-size: 13px;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      font-weight: 500;
+      transition: border-color 0.15s;
+    }
+    .btn-outline:hover { border-color: var(--foreground); }
+
+    /* ── Footer ────────────────────────────────────────────────── */
+    footer {
+      background: var(--navy-deep);
+      color: var(--primary-foreground);
+    }
+    .footer-inner {
+      padding-block: 4rem;
+    }
+    .footer-top {
+      display: grid;
+      gap: 3rem;
+      padding-bottom: 3rem;
+      border-bottom: 1px solid oklch(1 0 0 / 0.08);
+    }
+    @media (min-width: 768px) {
+      .footer-top { grid-template-columns: 2fr 1fr 1fr; }
+    }
+    .footer-logo { display: flex; align-items: center; gap: 0.75rem; }
+    .footer-logo img { height: 48px; width: 48px; object-fit: contain; }
+    .footer-logo-text .top { font-size: 11px; letter-spacing: 0.32em; opacity: 0.6; }
+    .footer-logo-text .bottom { font-size: 14px; font-weight: 600; letter-spacing: 0.18em; }
+    .footer-brand p { margin-top: 1.5rem; font-size: 14px; opacity: 0.7; max-width: 320px; line-height: 1.65; }
+
+    .footer-nav-title, .footer-contact-title {
+      font-size: 11px;
+      letter-spacing: 0.24em;
+      text-transform: uppercase;
+      opacity: 0.6;
+    }
+    .footer-nav ul, .footer-contact ul {
+      list-style: none;
+      margin-top: 1.25rem;
+      display: flex;
+      flex-direction: column;
+      gap: 0.75rem;
+      font-size: 14px;
+    }
+    .footer-nav a { opacity: 0.8; transition: opacity 0.15s; }
+    .footer-nav a:hover { opacity: 1; }
+    .footer-contact li { opacity: 0.8; }
+
+    .footer-bottom {
+      padding-top: 2rem;
+      display: flex;
+      flex-direction: column;
+      gap: 1rem;
+      font-size: 11px;
+      letter-spacing: 0.24em;
+      text-transform: uppercase;
+      opacity: 0.6;
+    }
+    @media (min-width: 640px) {
+      .footer-bottom { flex-direction: row; justify-content: space-between; align-items: center; }
+    }
+
+    /* ── Hamburger + mobile nav ────────────────────────────────── */
+    .nav-hamburger {
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      gap: 5px;
+      cursor: pointer;
+      padding: 0.4rem;
+      background: none;
+      border: none;
+      width: 36px;
+      height: 36px;
+    }
+    .nav-hamburger span {
+      display: block;
+      width: 22px;
+      height: 2px;
+      background: var(--foreground);
+      transition: transform 0.2s, opacity 0.2s;
+      transform-origin: center;
+    }
+    .nav-hamburger.open span:nth-child(1) { transform: translateY(7px) rotate(45deg); }
+    .nav-hamburger.open span:nth-child(2) { opacity: 0; }
+    .nav-hamburger.open span:nth-child(3) { transform: translateY(-7px) rotate(-45deg); }
+    @media (min-width: 640px) { .nav-hamburger { display: none; } }
+
+    .nav-mobile {
+      display: none;
+      position: fixed;
+      top: 80px; left: 0; right: 0;
+      background: var(--background);
+      border-bottom: 1px solid var(--border);
+      padding: 1.5rem;
+      flex-direction: column;
+      z-index: 49;
+    }
+    .nav-mobile.open { display: flex; }
+    .nav-mobile a {
+      font-size: 15px;
+      font-weight: 500;
+      color: var(--foreground);
+      padding: 1rem 0;
+      border-bottom: 1px solid var(--border);
+      letter-spacing: 0.04em;
+    }
+    .nav-mobile a:last-child { border-bottom: none; }
+    @media (min-width: 640px) { .nav-mobile { display: none !important; } }
+
+    /* ── Scroll animations ─────────────────────────────────────── */
+    @media (prefers-reduced-motion: no-preference) {
+      .reveal-item {
+        opacity: 0;
+        transform: translateY(28px);
+        transition: opacity 0.7s cubic-bezier(0.22, 1, 0.36, 1),
+                    transform 0.7s cubic-bezier(0.22, 1, 0.36, 1);
+      }
+      .reveal-item.is-visible {
+        opacity: 1;
+        transform: none;
+      }
+      .reveal-item[data-stagger="1"] { transition-delay: 0.07s; }
+      .reveal-item[data-stagger="2"] { transition-delay: 0.14s; }
+      .reveal-item[data-stagger="3"] { transition-delay: 0.21s; }
+      .reveal-item[data-stagger="4"] { transition-delay: 0.28s; }
+      .reveal-item[data-stagger="5"] { transition-delay: 0.35s; }
+      .reveal-item[data-stagger="6"] { transition-delay: 0.42s; }
+
+      .section-label {
+        opacity: 0;
+        transition: opacity 0.45s ease;
+      }
+      .section-label.is-visible { opacity: 1; }
+      .section-label .line-svg path {
+        stroke-dasharray: 20;
+        stroke-dashoffset: 20;
+        transition: stroke-dashoffset 0.55s ease 0.15s;
+      }
+      .section-label.is-visible .line-svg path { stroke-dashoffset: 0; }
+    }
+
+    /* ── Custom cursor ─────────────────────────────────────────── */
+    @media (pointer: fine) {
+      * { cursor: none !important; }
+      .cursor-dot {
+        position: fixed;
+        top: 0; left: 0;
+        width: 8px; height: 8px;
+        border-radius: 50%;
+        background: var(--foreground);
+        pointer-events: none;
+        z-index: 9999;
+        transform: translate(-50%, -50%);
+        transition: width 0.22s ease, height 0.22s ease,
+                    background 0.22s ease, opacity 0.3s ease;
+        will-change: left, top;
+      }
+      .cursor-ring {
+        position: fixed;
+        top: 0; left: 0;
+        width: 38px; height: 38px;
+        border-radius: 50%;
+        border: 1px solid oklch(0.18 0.03 260 / 0.3);
+        pointer-events: none;
+        z-index: 9998;
+        transform: translate(-50%, -50%);
+        transition: width 0.35s ease, height 0.35s ease,
+                    border-color 0.25s ease;
+        will-change: left, top;
+      }
+      .cursor-dot.is-hovering { width: 5px; height: 5px; background: var(--accent); }
+      .cursor-ring.is-hovering { width: 56px; height: 56px; border-color: var(--accent); border-width: 1.5px; }
+      .cursor-dot.is-clicking { transform: translate(-50%,-50%) scale(0.7); }
+    }
+
+    /* ── Small phone fixes ─────────────────────────────────────── */
+    @media (max-width: 399px) {
+      .container { padding-inline: 1rem; }
+    }
+
+    /* ── Transition curtain ────────────────────────────────────── */
+    .transition-curtain {
+      position: fixed;
+      inset: 0;
+      z-index: 9997;
+      background: var(--primary);
+      transform: translateX(100%);
+      pointer-events: none;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    .transition-logo {
+      opacity: 0;
+    }
+    .transition-logo img {
+      width: 64px;
+      height: 64px;
+      object-fit: contain;
+      filter: brightness(0) invert(1);
+      opacity: 0.4;
+    }
+
+    /* ── FAQ Page Hero ─────────────────────────────────────────── */
+    .faq-hero {
+      position: relative;
+      padding-top: 11rem;
+      padding-bottom: 6rem;
+      border-bottom: 1px solid var(--border);
+      overflow: hidden;
+    }
+    .faq-hero-grid-bg {
+      position: absolute;
+      inset: 0;
+      opacity: 0.02;
+      background-image:
+        linear-gradient(var(--foreground) 1px, transparent 1px),
+        linear-gradient(90deg, var(--foreground) 1px, transparent 1px);
+      background-size: 64px 64px;
+      pointer-events: none;
+    }
+    .faq-hero-inner { position: relative; }
+
+    .faq-page-tag {
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+      font-size: 11px;
+      letter-spacing: 0.32em;
+      color: var(--muted-foreground);
+      text-transform: uppercase;
+      margin-bottom: 2.5rem;
+    }
+    .faq-page-tag svg { color: var(--accent); }
+
+    .faq-page-title {
+      font-family: var(--font-serif);
+      font-weight: 500;
+      font-size: clamp(2.8rem, 6vw, 4.75rem);
+      line-height: 1.02;
+      letter-spacing: -0.02em;
+    }
+    .faq-page-title em { font-style: italic; color: var(--accent); }
+
+    .faq-page-desc-grid {
+      margin-top: 2.5rem;
+      display: grid;
+    }
+    @media (min-width: 1024px) {
+      .faq-page-desc-grid { grid-template-columns: repeat(12, 1fr); }
+      .faq-page-desc-grid p { grid-column: 7 / 13; }
+    }
+    .faq-page-desc-grid p {
+      font-size: 1.0625rem;
+      line-height: 1.7;
+      color: var(--muted-foreground);
+    }
+
+    @media (prefers-reduced-motion: no-preference) {
+      .faq-page-tag,
+      .faq-page-title,
+      .faq-page-desc-grid p {
+        opacity: 0;
+        transform: translateY(24px);
+      }
+    }
+
+    /* ── FAQ Section ───────────────────────────────────────────── */
+    .faq-section {
+      padding-block: 0;
+    }
+
+    .faq-grid {
+      display: grid;
+      gap: 0;
+    }
+    @media (min-width: 1024px) {
+      .faq-grid {
+        grid-template-columns: repeat(12, 1fr);
+        align-items: start;
+      }
+      .faq-grid-label { grid-column: 1 / 4; padding-top: 6rem; position: sticky; top: 100px; }
+      .faq-grid-list  { grid-column: 4 / 13; }
+    }
+
+    .faq-grid-label {
+      padding-top: 5rem;
+      padding-bottom: 3rem;
+    }
+    .faq-grid-label .section-label { margin-bottom: 2rem; }
+    .faq-grid-label h2 {
+      font-family: var(--font-serif);
+      font-size: clamp(1.5rem, 2.5vw, 2rem);
+      font-weight: 500;
+      line-height: 1.2;
+      letter-spacing: -0.01em;
+      color: var(--muted-foreground);
+    }
+    .faq-grid-label h2 em { font-style: italic; color: var(--foreground); }
+
+    .faq-grid-list {
+      border-top: 1px solid var(--border);
+      padding-top: 5rem;
+      padding-bottom: 7rem;
+    }
+
+    /* ── FAQ Item / Accordion ──────────────────────────────────── */
+    .faq-item {
+      border-bottom: 1px solid var(--border);
+    }
+
+    .faq-question {
+      width: 100%;
+      display: flex;
+      align-items: flex-start;
+      justify-content: space-between;
+      gap: 2rem;
+      padding: 2rem 0;
+      cursor: pointer;
+      background: none;
+      border: none;
+      text-align: left;
+      color: var(--foreground);
+      transition: color 0.15s;
+    }
+    .faq-question:hover { color: var(--accent); }
+    .faq-question:hover .faq-icon { color: var(--accent); }
+
+    .faq-question-text {
+      font-size: 1.0625rem;
+      font-weight: 500;
+      line-height: 1.45;
+      letter-spacing: 0.005em;
+      flex: 1;
+    }
+    @media (min-width: 768px) { .faq-question-text { font-size: 1.125rem; } }
+
+    .faq-icon {
+      flex-shrink: 0;
+      color: var(--muted-foreground);
+      transition: color 0.15s;
+      margin-top: 0.2rem;
+    }
+
+    .faq-answer {
+      overflow: hidden;
+    }
+
+    .faq-answer-inner {
+      padding-bottom: 2rem;
+      color: var(--muted-foreground);
+      font-size: 0.9375rem;
+      line-height: 1.8;
+      max-width: 640px;
+    }
+
+    /* ── FAQ CTA ───────────────────────────────────────────────── */
+    .faq-cta {
+      padding-block: 7rem;
+      background: var(--navy-deep);
+      color: var(--primary-foreground);
+    }
+
+    .faq-cta-inner {
+      display: grid;
+      gap: 3rem;
+    }
+    @media (min-width: 1024px) {
+      .faq-cta-inner {
+        grid-template-columns: repeat(12, 1fr);
+        align-items: center;
+      }
+      .faq-cta-text   { grid-column: 1 / 8; }
+      .faq-cta-action { grid-column: 9 / 13; justify-self: end; }
+    }
+
+    .faq-cta h2 {
+      font-family: var(--font-serif);
+      font-size: clamp(2rem, 4vw, 3.25rem);
+      font-weight: 500;
+      line-height: 1.1;
+      letter-spacing: -0.02em;
+    }
+    .faq-cta h2 em { font-style: italic; opacity: 0.6; }
+    .faq-cta p {
+      margin-top: 1.75rem;
+      font-size: 1rem;
+      line-height: 1.75;
+      opacity: 0.65;
+      max-width: 480px;
+    }
+
+    .btn-light {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.75rem;
+      background: var(--primary-foreground);
+      color: var(--primary);
+      padding: 1rem 1.75rem;
+      font-size: 13px;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      font-weight: 500;
+      transition: background 0.15s;
+    }
+    .btn-light:hover { background: oklch(0.96 0.004 90); }
+
+    /* ── Mobile responsive ─────────────────────────────────────── */
+    @media (max-width: 767px) {
+      .faq-hero { padding-top: 7rem; padding-bottom: 3.5rem; }
+      .faq-grid-label { padding-top: 3rem; padding-bottom: 1.5rem; }
+      .faq-grid-list { padding-top: 0; padding-bottom: 4rem; border-top: none; }
+      .faq-question { padding: 1.5rem 0; }
+      .faq-question-text { font-size: 1rem; }
+      .faq-cta { padding-block: 4.5rem; }
+      .btn-light { width: 100%; justify-content: center; }
+      .footer-inner { padding-block: 2.5rem; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- BARBA WRAPPER ───────────────────────────────────────────────────── -->
+  <div data-barba="wrapper">
+
+  <!-- Transition curtain (persists across page navigations) -->
+  <div class="transition-curtain" aria-hidden="true">
+    <div class="transition-logo">
+      <img src="assets/logo-dark.png" alt="" />
+    </div>
+  </div>
+
+  <!-- ═══════════════════════════════ NAV ═══════════════════════════════ -->
+  <header>
+    <nav class="container">
+      <a href="index.html" class="nav-logo">
+        <img src="assets/logo-dark.png" alt="Vertice Tech Group" />
+        <div class="nav-logo-text">
+          <div class="top">VERTICE</div>
+          <div class="bottom">TECH GROUP</div>
+        </div>
+      </a>
+      <ul class="nav-links">
+        <li><a href="index.html#capabilities">Capabilities</a></li>
+        <li><a href="index.html#approach">Approach</a></li>
+        <li><a href="index.html#expertise">Expertise</a></li>
+        <li><a href="faq.html" class="active">FAQ</a></li>
+        <li><a href="index.html#contact">Contact</a></li>
+      </ul>
+      <a href="index.html#contact" class="nav-cta">
+        Start a conversation
+        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M7 7h10v10"/><path d="M7 17 17 7"/></svg>
+      </a>
+      <button class="nav-hamburger" id="hamburger" aria-label="Menu">
+        <span></span><span></span><span></span>
+      </button>
+    </nav>
+  </header>
+
+  <!-- Mobile nav drawer -->
+  <nav class="nav-mobile" id="mobile-nav">
+    <a href="index.html#capabilities" onclick="closeMobileNav()">Capabilities</a>
+    <a href="index.html#approach" onclick="closeMobileNav()">Approach</a>
+    <a href="index.html#expertise" onclick="closeMobileNav()">Expertise</a>
+    <a href="faq.html" onclick="closeMobileNav()">FAQ</a>
+    <a href="index.html#contact" onclick="closeMobileNav()">Contact → Start a conversation</a>
+  </nav>
+
+  <!-- BARBA CONTAINER ─────────────────────────────────────────────────── -->
+  <main data-barba="container" data-barba-namespace="faq">
+
+  <!-- ═══════════════════════════════ HERO ══════════════════════════════ -->
+  <section class="faq-hero">
+    <div class="faq-hero-grid-bg"></div>
+    <div class="faq-hero-inner container">
+
+      <div class="faq-page-tag">
+        <svg xmlns="http://www.w3.org/2000/svg" width="32" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"/></svg>
+        VERTICE TECH GROUP · COMMON QUESTIONS
+      </div>
+
+      <h1 class="faq-page-title">
+        Questions we<br />
+        <em>hear often.</em>
+      </h1>
+
+      <div class="faq-page-desc-grid">
+        <p>
+          Direct answers about how we work, what we build, and how an engagement with Vertice begins — before the first call.
+        </p>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- ═══════════════════════════ FAQ LIST ══════════════════════════════ -->
+  <section class="faq-section">
+    <div class="container">
+      <div class="faq-grid">
+
+        <!-- Sticky label column -->
+        <div class="faq-grid-label">
+          <div class="section-label reveal-item">
+            <svg class="line-svg" xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14"/></svg>
+            06 · FAQ
+          </div>
+          <h2 class="reveal-item">
+            Every answer you need<br />
+            before the <em>first call.</em>
+          </h2>
+        </div>
+
+        <!-- Accordion list -->
+        <div class="faq-grid-list">
+
+          <div class="faq-item">
+            <button class="faq-question" aria-expanded="false">
+              <span class="faq-question-text">What types of systems does Vertice build?</span>
+              <span class="faq-icon" aria-hidden="true">
+                <svg width="22" height="22" viewBox="0 0 22 22" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round">
+                  <line x1="11" y1="3" x2="11" y2="19"/>
+                  <line x1="3" y1="11" x2="19" y2="11"/>
+                </svg>
+              </span>
+            </button>
+            <div class="faq-answer" role="region">
+              <div class="faq-answer-inner">
+                We design and build mission-critical transactional platforms — payment processing engines, logistics orchestration systems, financial data pipelines, and infrastructure where correctness and availability are non-negotiable. If your system touches money, inventory, or regulated workflows at scale, it is the kind of problem we exist to solve.
+              </div>
+            </div>
+          </div>
+
+          <div class="faq-item">
+            <button class="faq-question" aria-expanded="false">
+              <span class="faq-question-text">How does a typical engagement begin?</span>
+              <span class="faq-icon" aria-hidden="true">
+                <svg width="22" height="22" viewBox="0 0 22 22" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round">
+                  <line x1="11" y1="3" x2="11" y2="19"/>
+                  <line x1="3" y1="11" x2="19" y2="11"/>
+                </svg>
+              </span>
+            </button>
+            <div class="faq-answer" role="region">
+              <div class="faq-answer-inner">
+                Every engagement begins with a discovery and architecture phase — typically one to two weeks — where we map your existing landscape, define the technical blueprint, and agree on milestones. From there, we work in structured sprints with weekly syncs, full backlog visibility, and documented delivery gates at each phase. Nothing moves forward without alignment.
+              </div>
+            </div>
+          </div>
+
+          <div class="faq-item">
+            <button class="faq-question" aria-expanded="false">
+              <span class="faq-question-text">Do you work with early-stage companies or only enterprises?</span>
+              <span class="faq-icon" aria-hidden="true">
+                <svg width="22" height="22" viewBox="0 0 22 22" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round">
+                  <line x1="11" y1="3" x2="11" y2="19"/>
+                  <line x1="3" y1="11" x2="19" y2="11"/>
+                </svg>
+              </span>
+            </button>
+            <div class="faq-answer" role="region">
+              <div class="faq-answer-inner">
+                Both. We have built foundational infrastructure for early-stage companies that needed production-grade systems from the first line of code, and we have modernized legacy platforms for large financial institutions. What matters is the quality and complexity of the engineering problem — not the size of the organization.
+              </div>
+            </div>
+          </div>
+
+          <div class="faq-item">
+            <button class="faq-question" aria-expanded="false">
+              <span class="faq-question-text">Can Vertice work alongside our existing engineering team?</span>
+              <span class="faq-icon" aria-hidden="true">
+                <svg width="22" height="22" viewBox="0 0 22 22" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round">
+                  <line x1="11" y1="3" x2="11" y2="19"/>
+                  <line x1="3" y1="11" x2="19" y2="11"/>
+                </svg>
+              </span>
+            </button>
+            <div class="faq-answer" role="region">
+              <div class="faq-answer-inner">
+                Yes, frequently. We operate in embedded-team mode when in-house engineers are already in place, adapting to your existing workflows, code standards, and communication cadence. We can also lead a full turnkey engagement if you need an assembled team without an existing internal group.
+              </div>
+            </div>
+          </div>
+
+          <div class="faq-item">
+            <button class="faq-question" aria-expanded="false">
+              <span class="faq-question-text">How do you handle security and compliance requirements?</span>
+              <span class="faq-icon" aria-hidden="true">
+                <svg width="22" height="22" viewBox="0 0 22 22" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round">
+                  <line x1="11" y1="3" x2="11" y2="19"/>
+                  <line x1="3" y1="11" x2="19" y2="11"/>
+                </svg>
+              </span>
+            </button>
+            <div class="faq-answer" role="region">
+              <div class="faq-answer-inner">
+                Security is embedded in our engineering process from the first commit — not added at the end. We work regularly with SOC 2, PCI-DSS, and HIPAA-adjacent requirements. All deliverables go through internal security review before handoff, and we produce documentation suited for audit trails and compliance reporting as a standard deliverable.
+              </div>
+            </div>
+          </div>
+
+          <div class="faq-item">
+            <button class="faq-question" aria-expanded="false">
+              <span class="faq-question-text">How long does a core platform build take?</span>
+              <span class="faq-icon" aria-hidden="true">
+                <svg width="22" height="22" viewBox="0 0 22 22" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round">
+                  <line x1="11" y1="3" x2="11" y2="19"/>
+                  <line x1="3" y1="11" x2="19" y2="11"/>
+                </svg>
+              </span>
+            </button>
+            <div class="faq-answer" role="region">
+              <div class="faq-answer-inner">
+                A focused build — discovery through initial production deployment — typically runs 12 to 20 weeks for a core system. Larger programs with multiple subsystems, regulatory scope, or legacy migration complexity often extend to six to twelve months. We scope timing precisely during the discovery phase; we do not estimate before we understand the architecture.
+              </div>
+            </div>
+          </div>
+
+          <div class="faq-item">
+            <button class="faq-question" aria-expanded="false">
+              <span class="faq-question-text">How is pricing structured?</span>
+              <span class="faq-icon" aria-hidden="true">
+                <svg width="22" height="22" viewBox="0 0 22 22" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round">
+                  <line x1="11" y1="3" x2="11" y2="19"/>
+                  <line x1="3" y1="11" x2="19" y2="11"/>
+                </svg>
+              </span>
+            </button>
+            <div class="faq-answer" role="region">
+              <div class="faq-answer-inner">
+                Pricing depends on the shape of the engagement. Fixed-scope projects are quoted as a flat fee based on the architecture defined during discovery. Ongoing retainer and embedded-team engagements are structured on a time-and-materials basis with monthly billing. We discuss both models in the initial conversation — there is no single structure that fits every program.
+              </div>
+            </div>
+          </div>
+
+          <div class="faq-item">
+            <button class="faq-question" aria-expanded="false">
+              <span class="faq-question-text">What does post-launch support look like?</span>
+              <span class="faq-icon" aria-hidden="true">
+                <svg width="22" height="22" viewBox="0 0 22 22" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round">
+                  <line x1="11" y1="3" x2="11" y2="19"/>
+                  <line x1="3" y1="11" x2="19" y2="11"/>
+                </svg>
+              </span>
+            </button>
+            <div class="faq-answer" role="region">
+              <div class="faq-answer-inner">
+                We offer retainer-based support covering monitoring, incident response, and iterative feature development. If your goal is an eventual full handoff to an in-house team, we can structure a knowledge transfer and documentation package as part of the engagement close — including runbooks, architecture decision records, and onboarding sessions.
+              </div>
+            </div>
+          </div>
+
+          <div class="faq-item">
+            <button class="faq-question" aria-expanded="false">
+              <span class="faq-question-text">What makes Vertice different from a software agency?</span>
+              <span class="faq-icon" aria-hidden="true">
+                <svg width="22" height="22" viewBox="0 0 22 22" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round">
+                  <line x1="11" y1="3" x2="11" y2="19"/>
+                  <line x1="3" y1="11" x2="19" y2="11"/>
+                </svg>
+              </span>
+            </button>
+            <div class="faq-answer" role="region">
+              <div class="faq-answer-inner">
+                We do not take on volume work. Every engagement is staffed by senior engineers who have built and operated systems at scale — not junior developers following a template. Our focus is narrow by design: transactional, high-availability infrastructure. That specialization shows up in production metrics, SLA reports, and incident logs — not in slide decks.
+              </div>
+            </div>
+          </div>
+
+        </div><!-- /faq-grid-list -->
+      </div><!-- /faq-grid -->
+    </div><!-- /container -->
+  </section>
+
+  <!-- ═══════════════════════════════ CTA ════════════════════════════════ -->
+  <section class="faq-cta">
+    <div class="container">
+      <div class="faq-cta-inner">
+        <div class="faq-cta-text reveal-item">
+          <h2>
+            Have a question<br />
+            <em>we didn't cover?</em>
+          </h2>
+          <p>
+            Every engagement starts with a conversation. There is no form to fill, no deck to sit through — just a direct exchange about what you are building and whether we are the right firm for it.
+          </p>
+        </div>
+        <div class="faq-cta-action reveal-item" data-stagger="1">
+          <a href="index.html#contact" class="btn-light">
+            Start a conversation
+            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M7 7h10v10"/><path d="M7 17 17 7"/></svg>
+          </a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ════════════════════════════ FOOTER ═══════════════════════════════ -->
+  <footer>
+    <div class="footer-inner container">
+      <div class="footer-top">
+        <div class="footer-brand">
+          <div class="footer-logo">
+            <img src="assets/logo-light.png" alt="Vertice Tech Group" />
+            <div class="footer-logo-text">
+              <div class="top">VERTICE</div>
+              <div class="bottom">TECH GROUP LLC</div>
+            </div>
+          </div>
+          <p>Mission-critical software engineering for institutions that operate where downtime is not an option.</p>
+        </div>
+        <div class="footer-nav">
+          <div class="footer-nav-title">Practice</div>
+          <ul>
+            <li><a href="index.html#capabilities">Capabilities</a></li>
+            <li><a href="index.html#approach">Approach</a></li>
+            <li><a href="index.html#expertise">Expertise</a></li>
+            <li><a href="faq.html">FAQ</a></li>
+          </ul>
+        </div>
+        <div class="footer-contact">
+          <div class="footer-contact-title">Office</div>
+          <ul>
+            <li>United States</li>
+            <li>projects@verticetech.us</li>
+          </ul>
+        </div>
+      </div>
+      <div class="footer-bottom">
+        <div>© <script>document.write(new Date().getFullYear())</script> Vertice Tech Group LLC</div>
+        <div>All rights reserved</div>
+      </div>
+    </div>
+  </footer>
+
+  </main><!-- /[data-barba="container"] -->
+  </div><!-- /[data-barba="wrapper"] -->
+
+  <!-- ═══════════════════════ SCRIPTS ════════════════════════════════ -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@barba/core@2.9.7/dist/barba.umd.min.js"></script>
+
+  <!-- Custom cursor -->
+  <script>
+    if (window.matchMedia('(pointer: fine)').matches) {
+      const dot  = Object.assign(document.createElement('div'), { className: 'cursor-dot'  });
+      const ring = Object.assign(document.createElement('div'), { className: 'cursor-ring' });
+      document.body.append(dot, ring);
+
+      let mx = -100, my = -100, rx = -100, ry = -100;
+      document.addEventListener('mousemove', e => {
+        mx = e.clientX; my = e.clientY;
+        dot.style.left = mx + 'px'; dot.style.top = my + 'px';
+      });
+      document.addEventListener('mousedown', () => dot.classList.add('is-clicking'));
+      document.addEventListener('mouseup',   () => dot.classList.remove('is-clicking'));
+      (function animateRing() {
+        rx += (mx - rx) * 0.11; ry += (my - ry) * 0.11;
+        ring.style.left = rx + 'px'; ring.style.top = ry + 'px';
+        requestAnimationFrame(animateRing);
+      })();
+      document.addEventListener('mouseover', e => {
+        if (e.target.closest('a, button, .faq-question')) {
+          dot.classList.add('is-hovering'); ring.classList.add('is-hovering');
+        }
+      });
+      document.addEventListener('mouseout', e => {
+        if (e.target.closest('a, button, .faq-question')) {
+          dot.classList.remove('is-hovering'); ring.classList.remove('is-hovering');
+        }
+      });
+    }
+  </script>
+
+  <!-- Mobile nav toggle -->
+  <script>
+    const hamburger = document.getElementById('hamburger');
+    const mobileNav = document.getElementById('mobile-nav');
+    hamburger.addEventListener('click', () => {
+      hamburger.classList.toggle('open');
+      mobileNav.classList.toggle('open');
+    });
+    function closeMobileNav() {
+      hamburger.classList.remove('open');
+      mobileNav.classList.remove('open');
+    }
+  </script>
+
+  <!-- Scroll reveal -->
+  <script>
+    function initScrollReveal(root) {
+      root = root || document;
+      const allSelectors = [
+        '.section-label',
+        '.faq-cta h2', '.faq-cta p', '.faq-cta .btn-light',
+        '.faq-grid-label h2',
+        '.reveal-item',
+      ];
+      const obs = new IntersectionObserver(entries => {
+        entries.forEach(({ target, isIntersecting }) => {
+          if (isIntersecting) { target.classList.add('is-visible'); obs.unobserve(target); }
+        });
+      }, { threshold: 0.08, rootMargin: '0px 0px -40px 0px' });
+
+      allSelectors.forEach(sel => {
+        root.querySelectorAll(sel).forEach(el => {
+          if (!el.classList.contains('reveal-item')) el.classList.add('reveal-item');
+          if (sel === '.section-label') {
+            const svg = el.querySelector('svg');
+            if (svg) svg.classList.add('line-svg');
+          }
+          obs.observe(el);
+        });
+      });
+    }
+
+    initScrollReveal(document);
+  </script>
+
+  <!-- FAQ accordion (GSAP-powered) -->
+  <script>
+    function initFaqAccordion() {
+      const items = document.querySelectorAll('.faq-item');
+      if (!items.length) return;
+
+      const heights = new Map();
+
+      items.forEach(item => {
+        const answer = item.querySelector('.faq-answer');
+        if (!answer) return;
+        answer.style.height = 'auto';
+        heights.set(item, answer.scrollHeight);
+        gsap.set(answer, { height: 0, overflow: 'hidden' });
+      });
+
+      items.forEach(item => {
+        const btn    = item.querySelector('.faq-question');
+        const answer = item.querySelector('.faq-answer');
+        const icon   = item.querySelector('.faq-icon');
+        if (!btn || !answer) return;
+
+        btn.addEventListener('click', () => {
+          const isOpen = item.classList.contains('open');
+
+          items.forEach(i => {
+            if (i !== item && i.classList.contains('open')) {
+              const a = i.querySelector('.faq-answer');
+              const ic = i.querySelector('.faq-icon');
+              gsap.to(a, { height: 0, duration: 0.38, ease: 'power2.inOut' });
+              if (ic) gsap.to(ic, { rotation: 0, duration: 0.28, ease: 'power2.inOut' });
+              i.querySelector('.faq-question')?.setAttribute('aria-expanded', 'false');
+              i.classList.remove('open');
+            }
+          });
+
+          if (isOpen) {
+            gsap.to(answer, { height: 0, duration: 0.38, ease: 'power2.inOut' });
+            if (icon) gsap.to(icon, { rotation: 0, duration: 0.28, ease: 'power2.inOut' });
+            btn.setAttribute('aria-expanded', 'false');
+            item.classList.remove('open');
+          } else {
+            const h = heights.get(item) || 200;
+            gsap.to(answer, { height: h, duration: 0.48, ease: 'power3.out' });
+            if (icon) gsap.to(icon, { rotation: 45, duration: 0.28, ease: 'power2.inOut' });
+            btn.setAttribute('aria-expanded', 'true');
+            item.classList.add('open');
+          }
+        });
+      });
+    }
+  </script>
+
+  <!-- Barba.js init (direct access to faq.html) -->
+  <script>
+    barba.init({
+      prevent: ({ el }) => {
+        const href = el.getAttribute('href') || '';
+        return href.startsWith('#') || href === '' || href === '/';
+      },
+
+      transitions: [{
+        /* ── LEAVE: navy curtain wipes in from right ── */
+        async leave() {
+          if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+          return gsap.timeline()
+            .fromTo('.transition-curtain',
+              { xPercent: 100 },
+              { xPercent: 0, duration: 0.65, ease: 'power4.inOut' })
+            .to('.transition-logo', { opacity: 1, duration: 0.22, ease: 'power2.out' }, '-=0.22');
+        },
+
+        /* ── ENTER: curtain wipes out left, content animates in ── */
+        async enter({ next }) {
+          window.scrollTo(0, 0);
+
+          if (next.namespace === 'home') {
+            gsap.set(
+              ['.hero-tag', 'h1.hero-title', '.hero-desc-grid p', '.hero-ctas', '.stat-item'],
+              { opacity: 1, y: 0 }
+            );
+          }
+
+          if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+
+          if (next.namespace === 'faq') {
+            initFaqAccordion();
+          }
+
+          const tl = gsap.timeline();
+
+          tl.to('.transition-logo', { opacity: 0, duration: 0.2 })
+            .to('.transition-curtain', { xPercent: -100, duration: 0.65, ease: 'power4.inOut' }, '-=0.05');
+
+          if (next.namespace === 'faq') {
+            tl.fromTo('.faq-page-tag',
+                { opacity: 0, y: 20 }, { opacity: 1, y: 0, duration: 0.48, ease: 'power3.out' }, '-=0.3')
+              .fromTo('.faq-page-title',
+                { opacity: 0, y: 30 }, { opacity: 1, y: 0, duration: 0.65, ease: 'power3.out' }, '-=0.42')
+              .fromTo('.faq-page-desc-grid p',
+                { opacity: 0, y: 20 }, { opacity: 1, y: 0, duration: 0.5, ease: 'power3.out' }, '-=0.45')
+              .fromTo('.faq-item',
+                { opacity: 0, y: 20 }, { opacity: 1, y: 0, duration: 0.45, stagger: 0.06, ease: 'power3.out' }, '-=0.3');
+          }
+
+          tl.set('.transition-curtain', { xPercent: 100 });
+
+          return tl;
+        },
+
+        /* ── AFTER ENTER: scroll reveal + hash ── */
+        afterEnter({ next }) {
+          const hash = window.location.hash;
+          if (hash) {
+            const target = document.querySelector(hash);
+            if (target) setTimeout(() => target.scrollIntoView({ behavior: 'smooth' }), 80);
+          }
+          initScrollReveal(next.container);
+        },
+
+        /* ── ONCE: first load (direct visit to faq.html) ── */
+        once({ next }) {
+          if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+
+          if (next.namespace === 'faq') {
+            initFaqAccordion();
+            initScrollReveal(document);
+
+            gsap.fromTo('.faq-page-tag',
+              { opacity: 0, y: 20 }, { opacity: 1, y: 0, duration: 0.5, delay: 0.15, ease: 'power3.out' });
+            gsap.fromTo('.faq-page-title',
+              { opacity: 0, y: 32 }, { opacity: 1, y: 0, duration: 0.72, delay: 0.28, ease: 'power3.out' });
+            gsap.fromTo('.faq-page-desc-grid p',
+              { opacity: 0, y: 20 }, { opacity: 1, y: 0, duration: 0.55, delay: 0.4, ease: 'power3.out' });
+            gsap.fromTo('.faq-item',
+              { opacity: 0, y: 20 }, { opacity: 1, y: 0, duration: 0.45, stagger: 0.07, delay: 0.52, ease: 'power3.out' });
+          }
+        }
+      }]
+    });
+  </script>
+
+</body>
+</html>

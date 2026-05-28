@@ -883,6 +883,202 @@
       opacity: 0.6;
       cursor: not-allowed;
     }
+
+    /* ── Transition curtain (Barba + GSAP page transitions) ──────── */
+    .transition-curtain {
+      position: fixed;
+      inset: 0;
+      z-index: 9997;
+      background: var(--primary);
+      transform: translateX(100%);
+      pointer-events: none;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    .transition-logo {
+      opacity: 0;
+    }
+    .transition-logo img {
+      width: 64px;
+      height: 64px;
+      object-fit: contain;
+      filter: brightness(0) invert(1);
+      opacity: 0.4;
+    }
+
+    /* ── FAQ page styles (used when Barba swaps container to faq) ── */
+    .nav-links a.active { color: var(--foreground); font-weight: 500; }
+
+    .faq-hero {
+      position: relative;
+      padding-top: 11rem;
+      padding-bottom: 6rem;
+      border-bottom: 1px solid var(--border);
+      overflow: hidden;
+    }
+    .faq-hero-grid-bg {
+      position: absolute;
+      inset: 0;
+      opacity: 0.02;
+      background-image:
+        linear-gradient(var(--foreground) 1px, transparent 1px),
+        linear-gradient(90deg, var(--foreground) 1px, transparent 1px);
+      background-size: 64px 64px;
+      pointer-events: none;
+    }
+    .faq-hero-inner { position: relative; }
+
+    .faq-page-tag {
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+      font-size: 11px;
+      letter-spacing: 0.32em;
+      color: var(--muted-foreground);
+      text-transform: uppercase;
+      margin-bottom: 2.5rem;
+    }
+    .faq-page-tag svg { color: var(--accent); }
+
+    .faq-page-title {
+      font-family: var(--font-serif);
+      font-weight: 500;
+      font-size: clamp(2.8rem, 6vw, 4.75rem);
+      line-height: 1.02;
+      letter-spacing: -0.02em;
+    }
+    .faq-page-title em { font-style: italic; color: var(--accent); }
+
+    .faq-page-desc-grid {
+      margin-top: 2.5rem;
+      display: grid;
+    }
+    @media (min-width: 1024px) {
+      .faq-page-desc-grid { grid-template-columns: repeat(12, 1fr); }
+      .faq-page-desc-grid p { grid-column: 7 / 13; }
+    }
+    .faq-page-desc-grid p {
+      font-size: 1.0625rem;
+      line-height: 1.7;
+      color: var(--muted-foreground);
+    }
+
+    @media (prefers-reduced-motion: no-preference) {
+      .faq-page-tag,
+      .faq-page-title,
+      .faq-page-desc-grid p {
+        opacity: 0;
+        transform: translateY(24px);
+      }
+    }
+
+    .faq-section { padding-block: 0; }
+
+    .faq-grid { display: grid; gap: 0; }
+    @media (min-width: 1024px) {
+      .faq-grid { grid-template-columns: repeat(12, 1fr); align-items: start; }
+      .faq-grid-label { grid-column: 1 / 4; padding-top: 6rem; position: sticky; top: 100px; }
+      .faq-grid-list  { grid-column: 4 / 13; }
+    }
+
+    .faq-grid-label { padding-top: 5rem; padding-bottom: 3rem; }
+    .faq-grid-label .section-label { margin-bottom: 2rem; }
+    .faq-grid-label h2 {
+      font-family: var(--font-serif);
+      font-size: clamp(1.5rem, 2.5vw, 2rem);
+      font-weight: 500;
+      line-height: 1.2;
+      letter-spacing: -0.01em;
+      color: var(--muted-foreground);
+    }
+    .faq-grid-label h2 em { font-style: italic; color: var(--foreground); }
+
+    .faq-grid-list {
+      border-top: 1px solid var(--border);
+      padding-top: 5rem;
+      padding-bottom: 7rem;
+    }
+
+    .faq-item { border-bottom: 1px solid var(--border); }
+
+    .faq-question {
+      width: 100%;
+      display: flex;
+      align-items: flex-start;
+      justify-content: space-between;
+      gap: 2rem;
+      padding: 2rem 0;
+      cursor: pointer;
+      background: none;
+      border: none;
+      text-align: left;
+      color: var(--foreground);
+      transition: color 0.15s;
+    }
+    .faq-question:hover { color: var(--accent); }
+    .faq-question:hover .faq-icon { color: var(--accent); }
+
+    .faq-question-text {
+      font-size: 1.0625rem;
+      font-weight: 500;
+      line-height: 1.45;
+      letter-spacing: 0.005em;
+      flex: 1;
+    }
+    @media (min-width: 768px) { .faq-question-text { font-size: 1.125rem; } }
+
+    .faq-icon {
+      flex-shrink: 0;
+      color: var(--muted-foreground);
+      transition: color 0.15s;
+      margin-top: 0.2rem;
+    }
+
+    .faq-answer { overflow: hidden; }
+    .faq-answer-inner {
+      padding-bottom: 2rem;
+      color: var(--muted-foreground);
+      font-size: 0.9375rem;
+      line-height: 1.8;
+      max-width: 640px;
+    }
+
+    .faq-cta {
+      padding-block: 7rem;
+      background: var(--navy-deep);
+      color: var(--primary-foreground);
+    }
+    .faq-cta-inner { display: grid; gap: 3rem; }
+    @media (min-width: 1024px) {
+      .faq-cta-inner { grid-template-columns: repeat(12, 1fr); align-items: center; }
+      .faq-cta-text   { grid-column: 1 / 8; }
+      .faq-cta-action { grid-column: 9 / 13; justify-self: end; }
+    }
+    .faq-cta h2 {
+      font-family: var(--font-serif);
+      font-size: clamp(2rem, 4vw, 3.25rem);
+      font-weight: 500;
+      line-height: 1.1;
+      letter-spacing: -0.02em;
+    }
+    .faq-cta h2 em { font-style: italic; opacity: 0.6; }
+    .faq-cta p {
+      margin-top: 1.75rem;
+      font-size: 1rem;
+      line-height: 1.75;
+      opacity: 0.65;
+      max-width: 480px;
+    }
+
+    @media (max-width: 767px) {
+      .faq-hero { padding-top: 7rem; padding-bottom: 3.5rem; }
+      .faq-grid-label { padding-top: 3rem; padding-bottom: 1.5rem; }
+      .faq-grid-list { padding-top: 0; padding-bottom: 4rem; border-top: none; }
+      .faq-question { padding: 1.5rem 0; }
+      .faq-question-text { font-size: 1rem; }
+      .faq-cta { padding-block: 4.5rem; }
+    }
   </style>
 </head>
 <body>
@@ -916,6 +1112,7 @@
         <li><a href="#capabilities">Capabilities</a></li>
         <li><a href="#approach">Approach</a></li>
         <li><a href="#expertise">Expertise</a></li>
+        <li><a href="faq.html">FAQ</a></li>
         <li><a href="#contact">Contact</a></li>
       </ul>
       <a href="#contact" class="nav-cta">
@@ -933,8 +1130,16 @@
     <a href="#capabilities" onclick="closeMobileNav()">Capabilities</a>
     <a href="#approach" onclick="closeMobileNav()">Approach</a>
     <a href="#expertise" onclick="closeMobileNav()">Expertise</a>
+    <a href="faq.html" onclick="closeMobileNav()">FAQ</a>
     <a href="#contact" onclick="closeMobileNav()">Contact → Start a conversation</a>
   </nav>
+
+  <!-- Transition curtain (persists across Barba page navigations) -->
+  <div class="transition-curtain" aria-hidden="true">
+    <div class="transition-logo">
+      <img src="assets/logo-dark.png" alt="" />
+    </div>
+  </div>
 
   <!-- BARBA CONTAINER ─────────────────────────────────────────────────── -->
   <main data-barba="container" data-barba-namespace="home">
@@ -1420,51 +1625,107 @@
     })();
   </script>
 
-  <!-- Scroll effects -->
+  <!-- Scroll effects + FAQ accordion -->
   <script>
-    // ── 1. Reveal on scroll (Intersection Observer) ────────────
-    const staggerEls = new Set(['.service-card', '.principle-card', '.contact-detail-item']);
-    const allSelectors = [
-      // Hero elements are handled exclusively by GSAP (barba once hook)
-      '.section-label',
-      '.intro-grid h2', '.intro-grid .content-col p',
-      '.caps-header h2', '.service-card',
-      '.approach-header h2', '.principle-card',
-      '.expertise-header h2', '.expertise-header .title-col p',
-      '.stack-item',
-      '#cta-dark h2', '#cta-dark p', '#cta-dark .btn-light',
-      '.contact-info h2', '.contact-info > p',
-      '.contact-detail-item', '.contact-form form',
-    ];
+    // ── Reusable scroll reveal (called on first load + after Barba nav) ──
+    function initScrollReveal(root) {
+      root = root || document;
+      const staggerEls = new Set(['.service-card', '.principle-card', '.contact-detail-item']);
+      const allSelectors = [
+        '.section-label',
+        '.intro-grid h2', '.intro-grid .content-col p',
+        '.caps-header h2', '.service-card',
+        '.approach-header h2', '.principle-card',
+        '.expertise-header h2', '.expertise-header .title-col p',
+        '.stack-item',
+        '#cta-dark h2', '#cta-dark p', '#cta-dark .btn-light',
+        '.contact-info h2', '.contact-info > p',
+        '.contact-detail-item', '.contact-form form',
+        '.faq-cta h2', '.faq-cta p', '.faq-cta .btn-light',
+        '.faq-grid-label h2', '.reveal-item',
+      ];
 
-    const parentGroups = new Map();
+      const parentGroups = new Map();
 
-    allSelectors.forEach(sel => {
-      document.querySelectorAll(sel).forEach(el => {
-        el.classList.add('reveal-item');
-        if (sel === '.section-label') {
-          const svg = el.querySelector('svg');
-          if (svg) svg.classList.add('line-svg');
-        }
-        if (staggerEls.has(sel)) {
-          const parent = el.parentElement;
-          if (!parentGroups.has(parent)) parentGroups.set(parent, []);
-          parentGroups.get(parent).push(el);
-        }
+      allSelectors.forEach(sel => {
+        root.querySelectorAll(sel).forEach(el => {
+          if (!el.classList.contains('reveal-item')) el.classList.add('reveal-item');
+          if (sel === '.section-label') {
+            const svg = el.querySelector('svg');
+            if (svg) svg.classList.add('line-svg');
+          }
+          if (staggerEls.has(sel)) {
+            const parent = el.parentElement;
+            if (!parentGroups.has(parent)) parentGroups.set(parent, []);
+            parentGroups.get(parent).push(el);
+          }
+        });
       });
-    });
 
-    parentGroups.forEach(els => {
-      els.forEach((el, i) => { if (i > 0) el.dataset.stagger = Math.min(i, 6); });
-    });
-
-    const revealObs = new IntersectionObserver(entries => {
-      entries.forEach(({ target, isIntersecting }) => {
-        if (isIntersecting) { target.classList.add('is-visible'); revealObs.unobserve(target); }
+      parentGroups.forEach(els => {
+        els.forEach((el, i) => { if (i > 0) el.dataset.stagger = Math.min(i, 6); });
       });
-    }, { threshold: 0.08, rootMargin: '0px 0px -40px 0px' });
 
-    document.querySelectorAll('.reveal-item').forEach(el => revealObs.observe(el));
+      const obs = new IntersectionObserver(entries => {
+        entries.forEach(({ target, isIntersecting }) => {
+          if (isIntersecting) { target.classList.add('is-visible'); obs.unobserve(target); }
+        });
+      }, { threshold: 0.08, rootMargin: '0px 0px -40px 0px' });
+
+      root.querySelectorAll('.reveal-item').forEach(el => obs.observe(el));
+    }
+
+    initScrollReveal(document);
+
+    // ── FAQ accordion (GSAP-powered, shared with faq.html) ──────────
+    function initFaqAccordion() {
+      const items = document.querySelectorAll('.faq-item');
+      if (!items.length) return;
+
+      const heights = new Map();
+      items.forEach(item => {
+        const answer = item.querySelector('.faq-answer');
+        if (!answer) return;
+        answer.style.height = 'auto';
+        heights.set(item, answer.scrollHeight);
+        gsap.set(answer, { height: 0, overflow: 'hidden' });
+      });
+
+      items.forEach(item => {
+        const btn    = item.querySelector('.faq-question');
+        const answer = item.querySelector('.faq-answer');
+        const icon   = item.querySelector('.faq-icon');
+        if (!btn || !answer) return;
+
+        btn.addEventListener('click', () => {
+          const isOpen = item.classList.contains('open');
+
+          items.forEach(i => {
+            if (i !== item && i.classList.contains('open')) {
+              const a = i.querySelector('.faq-answer');
+              const ic = i.querySelector('.faq-icon');
+              gsap.to(a, { height: 0, duration: 0.38, ease: 'power2.inOut' });
+              if (ic) gsap.to(ic, { rotation: 0, duration: 0.28, ease: 'power2.inOut' });
+              i.querySelector('.faq-question')?.setAttribute('aria-expanded', 'false');
+              i.classList.remove('open');
+            }
+          });
+
+          if (isOpen) {
+            gsap.to(answer, { height: 0, duration: 0.38, ease: 'power2.inOut' });
+            if (icon) gsap.to(icon, { rotation: 0, duration: 0.28, ease: 'power2.inOut' });
+            btn.setAttribute('aria-expanded', 'false');
+            item.classList.remove('open');
+          } else {
+            const h = heights.get(item) || 200;
+            gsap.to(answer, { height: h, duration: 0.48, ease: 'power3.out' });
+            if (icon) gsap.to(icon, { rotation: 45, duration: 0.28, ease: 'power2.inOut' });
+            btn.setAttribute('aria-expanded', 'true');
+            item.classList.add('open');
+          }
+        });
+      });
+    }
 
     // ── 3. Counter animation (stats) ──────────────────────────
     const statEls   = document.querySelectorAll('.stat-value');
@@ -1514,72 +1775,105 @@
   </script>
   <script src="https://unpkg.com/@formspree/ajax@1" defer></script>
 
-  <!-- Barba.js init + GSAP cinematic entrance ────────────────────────── -->
+  <!-- Barba.js init + GSAP cinematic transitions ─────────────────────── -->
   <script>
     barba.init({
-      // Evitar que Barba intercepte anchor links (#section)
       prevent: ({ el }) => {
         const href = el.getAttribute('href') || '';
         return href.startsWith('#') || href === '' || href === '/';
       },
 
       transitions: [{
-        once() {
+        /* ── LEAVE: navy curtain wipes in from the right ── */
+        async leave() {
+          if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+          return gsap.timeline()
+            .fromTo('.transition-curtain',
+              { xPercent: 100 },
+              { xPercent: 0, duration: 0.65, ease: 'power4.inOut' })
+            .to('.transition-logo', { opacity: 1, duration: 0.22, ease: 'power2.out' }, '-=0.22');
+        },
+
+        /* ── ENTER: curtain exits left, new page content animates in ── */
+        async enter({ next }) {
+          window.scrollTo(0, 0);
+
+          if (next.namespace === 'home') {
+            // Hero elements start opacity:0 via CSS — make them visible immediately
+            gsap.set(
+              ['.hero-tag', 'h1.hero-title', '.hero-desc-grid p', '.hero-ctas', '.stat-item'],
+              { opacity: 1, y: 0 }
+            );
+          }
+
           if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
 
-          const tl = gsap.timeline({ defaults: { ease: 'power3.out' } });
+          if (next.namespace === 'faq') {
+            initFaqAccordion();
+          }
 
-          return tl
-            // 1. Aparece el logo en el loader
-            .from('.loader-logo-wrap', {
-              opacity: 0,
-              y: 10,
-              duration: 0.55,
-              delay: 0.2
-            })
-            // 2. Barra de progreso se llena
-            .to('.loader-bar-fill', {
-              width: '100%',
-              duration: 0.8,
-              ease: 'power2.inOut'
-            }, '+=0.1')
-            // 3. Pausa breve
-            .to({}, { duration: 0.15 })
-            // 4. Loader sube y revela el sitio
-            .to('#page-loader', {
-              yPercent: -100,
-              duration: 0.9,
-              ease: 'power4.inOut'
-            })
-            .set('#page-loader', { display: 'none' })
+          const tl = gsap.timeline();
 
-            // 5. Hero: entrada escalonada
-            .to('.hero-tag', {
-              opacity: 1, y: 0,
-              duration: 0.55
-            }, '-=0.35')
-            .to('h1.hero-title', {
-              opacity: 1, y: 0,
-              duration: 0.78
-            }, '-=0.42')
-            .to('.hero-desc-grid p', {
-              opacity: 1, y: 0,
-              duration: 0.65
-            }, '-=0.5')
-            .to('.hero-ctas', {
-              opacity: 1, y: 0,
-              duration: 0.55
-            }, '-=0.4')
-            .to('.stat-item', {
-              opacity: 1, y: 0,
-              duration: 0.45,
-              stagger: 0.08
-            }, '-=0.35');
+          tl.to('.transition-logo', { opacity: 0, duration: 0.2 })
+            .to('.transition-curtain', { xPercent: -100, duration: 0.65, ease: 'power4.inOut' }, '-=0.05');
+
+          // FAQ content staggers in while curtain finishes exiting
+          if (next.namespace === 'faq') {
+            tl.fromTo('.faq-page-tag',
+                { opacity: 0, y: 20 }, { opacity: 1, y: 0, duration: 0.48, ease: 'power3.out' }, '-=0.32')
+              .fromTo('.faq-page-title',
+                { opacity: 0, y: 30 }, { opacity: 1, y: 0, duration: 0.65, ease: 'power3.out' }, '-=0.44')
+              .fromTo('.faq-page-desc-grid p',
+                { opacity: 0, y: 20 }, { opacity: 1, y: 0, duration: 0.5, ease: 'power3.out' }, '-=0.46')
+              .fromTo('.faq-item',
+                { opacity: 0, y: 20 }, { opacity: 1, y: 0, duration: 0.45, stagger: 0.06, ease: 'power3.out' }, '-=0.32');
+          }
+
+          tl.set('.transition-curtain', { xPercent: 100 });
+
+          return tl;
+        },
+
+        /* ── AFTER ENTER: re-init observers, handle hash scroll ── */
+        afterEnter({ next }) {
+          const hash = window.location.hash;
+          if (hash) {
+            const target = document.querySelector(hash);
+            if (target) setTimeout(() => target.scrollIntoView({ behavior: 'smooth' }), 80);
+          }
+          initScrollReveal(next.container);
+        },
+
+        /* ── ONCE: first page load (home loader + hero entrance) ── */
+        once({ next }) {
+          if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+            const loader = document.getElementById('page-loader');
+            if (loader) loader.style.display = 'none';
+            return;
+          }
+
+          if (next.namespace === 'home') {
+            const tl = gsap.timeline({ defaults: { ease: 'power3.out' } });
+            return tl
+              .from('.loader-logo-wrap', { opacity: 0, y: 10, duration: 0.55, delay: 0.2 })
+              .to('.loader-bar-fill', { width: '100%', duration: 0.8, ease: 'power2.inOut' }, '+=0.1')
+              .to({}, { duration: 0.15 })
+              .to('#page-loader', { yPercent: -100, duration: 0.9, ease: 'power4.inOut' })
+              .set('#page-loader', { display: 'none' })
+              .to('.hero-tag',         { opacity: 1, y: 0, duration: 0.55 }, '-=0.35')
+              .to('h1.hero-title',     { opacity: 1, y: 0, duration: 0.78 }, '-=0.42')
+              .to('.hero-desc-grid p', { opacity: 1, y: 0, duration: 0.65 }, '-=0.5')
+              .to('.hero-ctas',        { opacity: 1, y: 0, duration: 0.55 }, '-=0.4')
+              .to('.stat-item',        { opacity: 1, y: 0, duration: 0.45, stagger: 0.08 }, '-=0.35');
+          } else {
+            const loader = document.getElementById('page-loader');
+            if (loader) loader.style.display = 'none';
+          }
         }
       }]
     });
 
-    // Safety net: si GSAP/Barba fallan, mostrar contenido a los 4s
+    // Safety net: mostrar contenido si GSAP/Barba fallan en 4s
     setTimeout(() => {
       const loader = document.getElementById('page-loader');
       if (loader && loader.style.display !== 'none') {
