@@ -796,6 +796,63 @@
     }
 
     /* ── Formspree feedback ────────────────────────────────────── */
+    /* ── Page loader ───────────────────────────────────────────────── */
+    #page-loader {
+      position: fixed;
+      inset: 0;
+      z-index: 9999;
+      background: var(--navy-deep);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    .loader-inner {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 2.5rem;
+    }
+    .loader-logo-wrap {
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+      opacity: 0;
+      transform: translateY(10px);
+    }
+    .loader-logo-wrap img { height: 44px; width: 44px; object-fit: contain; }
+    .loader-wordmark { line-height: 1.3; color: var(--primary-foreground); }
+    .loader-wordmark .loader-top { font-size: 11px; letter-spacing: 0.32em; opacity: 0.6; }
+    .loader-wordmark .loader-bot { font-size: 14px; font-weight: 600; letter-spacing: 0.18em; }
+    .loader-bar-track {
+      width: 200px;
+      height: 1px;
+      background: oklch(1 0 0 / 0.12);
+      overflow: hidden;
+    }
+    .loader-bar-fill {
+      height: 100%;
+      width: 0%;
+      background: var(--accent);
+    }
+
+    /* ── Hero: invisible hasta que GSAP los anime ──────────────────── */
+    @media (prefers-reduced-motion: no-preference) {
+      .hero-tag,
+      h1.hero-title,
+      .hero-desc-grid p,
+      .hero-ctas {
+        opacity: 0;
+        transform: translateY(28px);
+      }
+      .stat-item {
+        opacity: 0;
+        transform: translateY(16px);
+      }
+    }
+    @media (prefers-reduced-motion: reduce) {
+      #page-loader { display: none; }
+    }
+
     [data-fs-success] {
       display: none;
       padding: 1.25rem 1.5rem;
@@ -832,6 +889,25 @@
 </head>
 <body>
 
+  <!-- PAGE LOADER ─────────────────────────────────────────────────────── -->
+  <div id="page-loader" aria-hidden="true">
+    <div class="loader-inner">
+      <div class="loader-logo-wrap">
+        <img src="assets/logo-light.png" alt="" />
+        <div class="loader-wordmark">
+          <div class="loader-top">VERTICE</div>
+          <div class="loader-bot">TECH GROUP</div>
+        </div>
+      </div>
+      <div class="loader-bar-track">
+        <div class="loader-bar-fill"></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- BARBA WRAPPER ───────────────────────────────────────────────────── -->
+  <div data-barba="wrapper">
+
   <!-- ═══════════════════════════════ NAV ═══════════════════════════════ -->
   <header>
     <nav class="container">
@@ -865,6 +941,9 @@
     <a href="#expertise" onclick="closeMobileNav()">Expertise</a>
     <a href="#contact" onclick="closeMobileNav()">Contact → Start a conversation</a>
   </nav>
+
+  <!-- BARBA CONTAINER ─────────────────────────────────────────────────── -->
+  <main data-barba="container" data-barba-namespace="home">
 
   <!-- ═══════════════════════════════ HERO ══════════════════════════════ -->
   <section id="top">
@@ -1231,6 +1310,15 @@
     </div>
   </footer>
 
+  </main><!-- /[data-barba="container"] -->
+  </div><!-- /[data-barba="wrapper"] -->
+
+  <!-- ═══════════════════════ SCRIPTS ════════════════════════════════ -->
+
+  <!-- GSAP 3 -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
+  <!-- Barba.js -->
+  <script src="https://cdn.jsdelivr.net/npm/@barba/core@2.9.7/dist/barba.umd.min.js"></script>
   <!-- CountUp.js -->
   <script src="https://cdnjs.cloudflare.com/ajax/libs/countup.js/2.8.0/countUp.umd.min.js"></script>
 
@@ -1341,10 +1429,10 @@
   <!-- Scroll effects -->
   <script>
     // ── 1. Reveal on scroll (Intersection Observer) ────────────
-    const staggerEls = new Set(['.stat-item', '.service-card', '.principle-card', '.stack-item', '.contact-detail-item']);
+    const staggerEls = new Set(['.service-card', '.principle-card', '.contact-detail-item']);
     const allSelectors = [
-      '.hero-tag', 'h1.hero-title', '.hero-desc-grid p', '.hero-ctas',
-      '.stat-item', '.section-label',
+      // Hero elements are handled exclusively by GSAP (barba once hook)
+      '.section-label',
       '.intro-grid h2', '.intro-grid .content-col p',
       '.caps-header h2', '.service-card',
       '.approach-header h2', '.principle-card',
@@ -1431,6 +1519,84 @@
     formspree('initForm', { formElement: '#contact-form', formId: 'mwvzwweo' });
   </script>
   <script src="https://unpkg.com/@formspree/ajax@1" defer></script>
+
+  <!-- Barba.js init + GSAP cinematic entrance ────────────────────────── -->
+  <script>
+    barba.init({
+      // Evitar que Barba intercepte anchor links (#section)
+      prevent: ({ el }) => {
+        const href = el.getAttribute('href') || '';
+        return href.startsWith('#') || href === '' || href === '/';
+      },
+
+      transitions: [{
+        once() {
+          if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+
+          const tl = gsap.timeline({ defaults: { ease: 'power3.out' } });
+
+          return tl
+            // 1. Aparece el logo en el loader
+            .to('.loader-logo-wrap', {
+              opacity: 1,
+              y: 0,
+              duration: 0.55,
+              delay: 0.2
+            })
+            // 2. Barra de progreso se llena
+            .to('.loader-bar-fill', {
+              width: '100%',
+              duration: 0.8,
+              ease: 'power2.inOut'
+            }, '+=0.1')
+            // 3. Pausa breve
+            .to({}, { duration: 0.15 })
+            // 4. Loader sube y revela el sitio
+            .to('#page-loader', {
+              yPercent: -100,
+              duration: 0.9,
+              ease: 'power4.inOut'
+            })
+            .set('#page-loader', { display: 'none' })
+
+            // 5. Hero: entrada escalonada
+            .to('.hero-tag', {
+              opacity: 1, y: 0,
+              duration: 0.55
+            }, '-=0.35')
+            .to('h1.hero-title', {
+              opacity: 1, y: 0,
+              duration: 0.78
+            }, '-=0.42')
+            .to('.hero-desc-grid p', {
+              opacity: 1, y: 0,
+              duration: 0.65
+            }, '-=0.5')
+            .to('.hero-ctas', {
+              opacity: 1, y: 0,
+              duration: 0.55
+            }, '-=0.4')
+            .to('.stat-item', {
+              opacity: 1, y: 0,
+              duration: 0.45,
+              stagger: 0.08
+            }, '-=0.35');
+        }
+      }]
+    });
+
+    // Safety net: si GSAP/Barba fallan, mostrar contenido a los 4s
+    setTimeout(() => {
+      const loader = document.getElementById('page-loader');
+      if (loader && loader.style.display !== 'none') {
+        loader.style.transition = 'opacity 0.4s';
+        loader.style.opacity = '0';
+        setTimeout(() => { loader.style.display = 'none'; }, 400);
+        document.querySelectorAll('.hero-tag, h1.hero-title, .hero-desc-grid p, .hero-ctas, .stat-item')
+          .forEach(el => { el.style.opacity = '1'; el.style.transform = 'none'; });
+      }
+    }, 4000);
+  </script>
 
 </body>
 </html>
