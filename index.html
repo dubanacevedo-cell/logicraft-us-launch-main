@@ -1780,7 +1780,7 @@
     barba.init({
       prevent: ({ el }) => {
         const href = el.getAttribute('href') || '';
-        return href.startsWith('#') || href === '' || href === '/';
+        return href.startsWith('#') || href === '';
       },
 
       transitions: [{

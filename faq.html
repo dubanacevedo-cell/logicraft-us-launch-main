@@ -581,7 +581,7 @@
   <!-- ═══════════════════════════════ NAV ═══════════════════════════════ -->
   <header>
     <nav class="container">
-      <a href="index.html" class="nav-logo">
+      <a href="/" class="nav-logo">
         <img src="assets/logo-dark.png" alt="Vertice Tech Group" />
         <div class="nav-logo-text">
           <div class="top">VERTICE</div>
@@ -589,13 +589,13 @@
         </div>
       </a>
       <ul class="nav-links">
-        <li><a href="index.html#capabilities">Capabilities</a></li>
-        <li><a href="index.html#approach">Approach</a></li>
-        <li><a href="index.html#expertise">Expertise</a></li>
+        <li><a href="/#capabilities">Capabilities</a></li>
+        <li><a href="/#approach">Approach</a></li>
+        <li><a href="/#expertise">Expertise</a></li>
         <li><a href="faq.html" class="active">FAQ</a></li>
-        <li><a href="index.html#contact">Contact</a></li>
+        <li><a href="/#contact">Contact</a></li>
       </ul>
-      <a href="index.html#contact" class="nav-cta">
+      <a href="/#contact" class="nav-cta">
         Start a conversation
         <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M7 7h10v10"/><path d="M7 17 17 7"/></svg>
       </a>
@@ -607,11 +607,11 @@
 
   <!-- Mobile nav drawer -->
   <nav class="nav-mobile" id="mobile-nav">
-    <a href="index.html#capabilities" onclick="closeMobileNav()">Capabilities</a>
-    <a href="index.html#approach" onclick="closeMobileNav()">Approach</a>
-    <a href="index.html#expertise" onclick="closeMobileNav()">Expertise</a>
+    <a href="/#capabilities" onclick="closeMobileNav()">Capabilities</a>
+    <a href="/#approach" onclick="closeMobileNav()">Approach</a>
+    <a href="/#expertise" onclick="closeMobileNav()">Expertise</a>
     <a href="faq.html" onclick="closeMobileNav()">FAQ</a>
-    <a href="index.html#contact" onclick="closeMobileNav()">Contact → Start a conversation</a>
+    <a href="/#contact" onclick="closeMobileNav()">Contact → Start a conversation</a>
   </nav>
 
   <!-- BARBA CONTAINER ─────────────────────────────────────────────────── -->
@@ -833,7 +833,7 @@
           </p>
         </div>
         <div class="faq-cta-action reveal-item" data-stagger="1">
-          <a href="index.html#contact" class="btn-light">
+          <a href="/#contact" class="btn-light">
             Start a conversation
             <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M7 7h10v10"/><path d="M7 17 17 7"/></svg>
           </a>
@@ -859,9 +859,9 @@
         <div class="footer-nav">
           <div class="footer-nav-title">Practice</div>
           <ul>
-            <li><a href="index.html#capabilities">Capabilities</a></li>
-            <li><a href="index.html#approach">Approach</a></li>
-            <li><a href="index.html#expertise">Expertise</a></li>
+            <li><a href="/#capabilities">Capabilities</a></li>
+            <li><a href="/#approach">Approach</a></li>
+            <li><a href="/#expertise">Expertise</a></li>
             <li><a href="faq.html">FAQ</a></li>
           </ul>
         </div>
@@ -1022,7 +1022,7 @@
     barba.init({
       prevent: ({ el }) => {
         const href = el.getAttribute('href') || '';
-        return href.startsWith('#') || href === '' || href === '/';
+        return href.startsWith('#') || href === '';
       },
 
       transitions: [{
