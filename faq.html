@@ -589,13 +589,13 @@
         </div>
       </a>
       <ul class="nav-links">
-        <li><a href="/#capabilities">Capabilities</a></li>
-        <li><a href="/#approach">Approach</a></li>
-        <li><a href="/#expertise">Expertise</a></li>
+        <li><a href="/#capabilities" onclick="faqGoHome('/#capabilities',event);return false;">Capabilities</a></li>
+        <li><a href="/#approach"    onclick="faqGoHome('/#approach',event);return false;">Approach</a></li>
+        <li><a href="/#expertise"   onclick="faqGoHome('/#expertise',event);return false;">Expertise</a></li>
         <li><a href="faq.html" class="active">FAQ</a></li>
-        <li><a href="/#contact">Contact</a></li>
+        <li><a href="/#contact"     onclick="faqGoHome('/#contact',event);return false;">Contact</a></li>
       </ul>
-      <a href="/#contact" class="nav-cta">
+      <a href="/#contact" onclick="faqGoHome('/#contact',event);return false;" class="nav-cta">
         Start a conversation
         <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M7 7h10v10"/><path d="M7 17 17 7"/></svg>
       </a>
@@ -607,11 +607,11 @@
 
   <!-- Mobile nav drawer -->
   <nav class="nav-mobile" id="mobile-nav">
-    <a href="/#capabilities" onclick="closeMobileNav()">Capabilities</a>
-    <a href="/#approach" onclick="closeMobileNav()">Approach</a>
-    <a href="/#expertise" onclick="closeMobileNav()">Expertise</a>
+    <a href="/#capabilities" onclick="closeMobileNav();faqGoHome('/#capabilities',event);return false;">Capabilities</a>
+    <a href="/#approach"    onclick="closeMobileNav();faqGoHome('/#approach',event);return false;">Approach</a>
+    <a href="/#expertise"   onclick="closeMobileNav();faqGoHome('/#expertise',event);return false;">Expertise</a>
     <a href="faq.html" onclick="closeMobileNav()">FAQ</a>
-    <a href="/#contact" onclick="closeMobileNav()">Contact → Start a conversation</a>
+    <a href="/#contact"     onclick="closeMobileNav();faqGoHome('/#contact',event);return false;">Contact → Start a conversation</a>
   </nav>
 
   <!-- BARBA CONTAINER ─────────────────────────────────────────────────── -->
@@ -1036,17 +1036,16 @@
     }
   </script>
 
-  <!-- Home navigation: GSAP curtain → navigate with absolute URL ──────── -->
+  <!-- Home navigation: curtain → absolute URL ────────────────────────── -->
   <script>
-    function faqGoHome(href) {
-      // Build absolute URL to avoid browser treating /#section as same-page hash
+    function faqGoHome(href, e) {
+      if (e) { e.preventDefault(); e.stopPropagation(); }
       var dest = window.location.protocol + '//' + window.location.host + href;
-      if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+      var curtain = document.querySelector('.transition-curtain');
+      if (!curtain || window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
         window.location.assign(dest);
         return;
       }
-      var curtain = document.querySelector('.transition-curtain');
-      if (!curtain) { window.location.assign(dest); return; }
       gsap.fromTo(curtain,
         { xPercent: 100 },
         { xPercent: 0, duration: 0.55, ease: 'power4.inOut',
@@ -1055,13 +1054,9 @@
       );
     }
 
-    document.addEventListener('DOMContentLoaded', function() {
-      document.querySelectorAll('a[href="/"], a[href^="/#"]').forEach(function(link) {
-        link.addEventListener('click', function(e) {
-          e.preventDefault();
-          faqGoHome(link.getAttribute('href'));
-        });
-      });
+    // Bind directly — script is at bottom of body, DOM is already parsed
+    document.querySelectorAll('a[href="/"], a[href^="/#"]').forEach(function(link) {
+      link.addEventListener('click', function(e) { faqGoHome(link.getAttribute('href'), e); });
     });
   </script>
 
