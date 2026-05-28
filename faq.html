@@ -937,18 +937,21 @@
   <script>
     function initScrollReveal(root) {
       root = root || document;
+      const staggerEls = new Set(['.service-card', '.principle-card', '.contact-detail-item']);
       const allSelectors = [
         '.section-label',
+        '.intro-grid h2', '.intro-grid .content-col p',
+        '.caps-header h2', '.service-card',
+        '.approach-header h2', '.principle-card',
+        '.expertise-header h2', '.expertise-header .title-col p',
+        '#cta-dark h2', '#cta-dark p', '#cta-dark .btn-light',
+        '.contact-info h2', '.contact-info > p',
+        '.contact-detail-item', '.contact-form form',
         '.faq-cta h2', '.faq-cta p', '.faq-cta .btn-light',
-        '.faq-grid-label h2',
-        '.reveal-item',
+        '.faq-grid-label h2', '.reveal-item',
       ];
-      const obs = new IntersectionObserver(entries => {
-        entries.forEach(({ target, isIntersecting }) => {
-          if (isIntersecting) { target.classList.add('is-visible'); obs.unobserve(target); }
-        });
-      }, { threshold: 0.08, rootMargin: '0px 0px -40px 0px' });
 
+      const parentGroups = new Map();
       allSelectors.forEach(sel => {
         root.querySelectorAll(sel).forEach(el => {
           if (!el.classList.contains('reveal-item')) el.classList.add('reveal-item');
@@ -956,9 +959,25 @@
             const svg = el.querySelector('svg');
             if (svg) svg.classList.add('line-svg');
           }
-          obs.observe(el);
+          if (staggerEls.has(sel)) {
+            const parent = el.parentElement;
+            if (!parentGroups.has(parent)) parentGroups.set(parent, []);
+            parentGroups.get(parent).push(el);
+          }
         });
       });
+
+      parentGroups.forEach(els => {
+        els.forEach((el, i) => { if (i > 0) el.dataset.stagger = Math.min(i, 6); });
+      });
+
+      const obs = new IntersectionObserver(entries => {
+        entries.forEach(({ target, isIntersecting }) => {
+          if (isIntersecting) { target.classList.add('is-visible'); obs.unobserve(target); }
+        });
+      }, { threshold: 0.08, rootMargin: '0px 0px -40px 0px' });
+
+      root.querySelectorAll('.reveal-item').forEach(el => obs.observe(el));
     }
 
     initScrollReveal(document);
@@ -1047,6 +1066,16 @@
             );
           }
 
+          // Scroll to hash target INSTANTLY while curtain covers screen
+          const hash = window.location.hash;
+          if (hash) {
+            const target = document.querySelector(hash);
+            if (target) {
+              const top = target.getBoundingClientRect().top + window.scrollY - 88;
+              window.scrollTo(0, Math.max(0, top));
+            }
+          }
+
           if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
 
           if (next.namespace === 'faq') {
@@ -1074,13 +1103,8 @@
           return tl;
         },
 
-        /* ── AFTER ENTER: scroll reveal + hash ── */
+        /* ── AFTER ENTER: re-init scroll reveal ── */
         afterEnter({ next }) {
-          const hash = window.location.hash;
-          if (hash) {
-            const target = document.querySelector(hash);
-            if (target) setTimeout(() => target.scrollIntoView({ behavior: 'smooth' }), 80);
-          }
           initScrollReveal(next.container);
         },
 
