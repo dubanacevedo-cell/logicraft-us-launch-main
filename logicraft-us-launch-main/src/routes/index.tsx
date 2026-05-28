@@ -43,7 +43,7 @@ function Index() {
       {/* NAV */}
       <header className="fixed top-0 inset-x-0 z-50 bg-background/85 backdrop-blur-md border-b border-border">
         <nav className="mx-auto max-w-6xl px-6 lg:px-10 h-20 flex items-center justify-between">
-          <a href="#top" className="flex items-center gap-3">
+            <a href="/#top" className="flex items-center gap-3">
             <img src={logoDark} alt="Vertice Tech Group" className="h-10 w-10 object-contain" />
             <div className="leading-tight">
               <div className="text-[11px] tracking-[0.32em] text-muted-foreground">VERTICE</div>
@@ -51,12 +51,12 @@ function Index() {
             </div>
           </a>
           <div className="hidden md:flex items-center gap-10 text-[13px] text-muted-foreground">
-            <a href="#capabilities" className="hover:text-foreground transition">Capabilities</a>
-            <a href="#approach" className="hover:text-foreground transition">Approach</a>
-            <a href="#expertise" className="hover:text-foreground transition">Expertise</a>
-            <a href="#contact" className="hover:text-foreground transition">Contact</a>
+            <a href="/#capabilities" className="hover:text-foreground transition">Capabilities</a>
+            <a href="/#approach" className="hover:text-foreground transition">Approach</a>
+            <a href="/#expertise" className="hover:text-foreground transition">Expertise</a>
+            <a href="/#contact" className="hover:text-foreground transition">Contact</a>
           </div>
-          <a href="#contact" className="hidden sm:inline-flex items-center gap-2 border-b border-foreground pb-1 text-[13px] font-medium hover:gap-3 transition-all">
+          <a href="/#contact" className="hidden sm:inline-flex items-center gap-2 border-b border-foreground pb-1 text-[13px] font-medium hover:gap-3 transition-all">
             Start a conversation <ArrowUpRight className="h-4 w-4" />
           </a>
         </nav>
@@ -80,10 +80,10 @@ function Index() {
             </p>
           </div>
           <div className="mt-14 flex flex-wrap gap-4">
-            <a href="#contact" className="inline-flex items-center gap-3 bg-primary text-primary-foreground px-7 py-4 text-[13px] tracking-wider uppercase font-medium hover:bg-primary/90 transition">
+            <a href="/#contact" className="inline-flex items-center gap-3 bg-primary text-primary-foreground px-7 py-4 text-[13px] tracking-wider uppercase font-medium hover:bg-primary/90 transition">
               Request architecture review <ArrowUpRight className="h-4 w-4" />
             </a>
-            <a href="#capabilities" className="inline-flex items-center gap-3 border border-border px-7 py-4 text-[13px] tracking-wider uppercase font-medium hover:border-foreground transition">
+            <a href="/#capabilities" className="inline-flex items-center gap-3 border border-border px-7 py-4 text-[13px] tracking-wider uppercase font-medium hover:border-foreground transition">
               Explore capabilities
             </a>
           </div>
@@ -220,7 +220,7 @@ function Index() {
           <p className="mt-8 text-lg opacity-75 max-w-xl mx-auto">
             We offer a complimentary architecture review for institutions evaluating the resilience of their mission-critical systems.
           </p>
-          <a href="#contact" className="mt-12 inline-flex items-center gap-3 bg-background text-foreground px-8 py-4 text-[13px] tracking-wider uppercase font-medium hover:bg-accent hover:text-accent-foreground transition">
+          <a href="/#contact" className="mt-12 inline-flex items-center gap-3 bg-background text-foreground px-8 py-4 text-[13px] tracking-wider uppercase font-medium hover:bg-accent hover:text-accent-foreground transition">
             Request the review <ArrowUpRight className="h-4 w-4" />
           </a>
         </div>
@@ -325,9 +325,9 @@ function Index() {
             <div className="md:col-span-3">
               <div className="text-[11px] tracking-[0.24em] uppercase opacity-60">Practice</div>
               <ul className="mt-5 space-y-3 text-sm">
-                <li><a href="#capabilities" className="opacity-80 hover:opacity-100">Capabilities</a></li>
-                <li><a href="#approach" className="opacity-80 hover:opacity-100">Approach</a></li>
-                <li><a href="#expertise" className="opacity-80 hover:opacity-100">Expertise</a></li>
+                <li><a href="/#capabilities" className="opacity-80 hover:opacity-100">Capabilities</a></li>
+                <li><a href="/#approach" className="opacity-80 hover:opacity-100">Approach</a></li>
+                <li><a href="/#expertise" className="opacity-80 hover:opacity-100">Expertise</a></li>
               </ul>
             </div>
             <div className="md:col-span-4">
