@@ -1036,19 +1036,38 @@
     }
   </script>
 
+  <!-- Home navigation: capture-phase GSAP curtain → full reload ──────── -->
+  <!-- barba.go() has hash-URL issues in multi-page setups; direct       -->
+  <!-- window.location.href after the curtain animation is reliable.     -->
+  <script>
+    document.addEventListener('click', function(e) {
+      var link = e.target.closest('a');
+      if (!link) return;
+      var href = link.getAttribute('href') || '';
+      if (href !== '/' && !href.startsWith('/#')) return;
+      e.preventDefault();
+      e.stopImmediatePropagation();
+      if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+        window.location.href = href;
+        return;
+      }
+      gsap.fromTo('.transition-curtain',
+        { xPercent: 100 },
+        { xPercent: 0, duration: 0.55, ease: 'power4.inOut',
+          onComplete: function() { window.location.href = href; }
+        }
+      );
+    }, true);
+  </script>
+
   <!-- Barba.js init (direct access to faq.html) -->
   <script>
-    // Pending scroll target set by the capture-phase handler below
-    var _pendingScroll = null;
-
     barba.init({
-      // Prevent Barba from intercepting same-page anchors and empty hrefs.
-      // Root-relative section links (/#section) are handled by the
-      // capture listener below via barba.go() to avoid browser treating
-      // them as same-document hash navigation.
       prevent: ({ el }) => {
-        const href = el.getAttribute('href') || '';
-        return href.startsWith('#') || href === '' || href === '/';
+        var href = el.getAttribute('href') || '';
+        // Block same-page anchors, empty, root, and /#section links
+        // (those are handled by the capture listener above)
+        return href.startsWith('#') || href === '' || href === '/' || href.startsWith('/#');
       },
 
       transitions: [{
@@ -1062,28 +1081,9 @@
             .to('.transition-logo', { opacity: 1, duration: 0.22, ease: 'power2.out' }, '-=0.22');
         },
 
-        /* ── ENTER: curtain wipes out left, content animates in ── */
+        /* ── ENTER: curtain exits, content animates in ── */
         async enter({ next }) {
           window.scrollTo(0, 0);
-
-          if (next.namespace === 'home') {
-            gsap.set(
-              ['.hero-tag', 'h1.hero-title', '.hero-desc-grid p', '.hero-ctas', '.stat-item'],
-              { opacity: 1, y: 0 }
-            );
-          }
-
-          // Scroll to target section INSTANTLY while curtain covers screen.
-          // Use _pendingScroll (set by capture handler) as reliable source.
-          const scrollTarget = _pendingScroll;
-          _pendingScroll = null;
-          if (scrollTarget) {
-            const el = document.querySelector(scrollTarget);
-            if (el) {
-              const top = el.getBoundingClientRect().top + window.scrollY - 88;
-              window.scrollTo(0, Math.max(0, top));
-            }
-          }
 
           if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
 
@@ -1137,20 +1137,6 @@
         }
       }]
     });
-
-    // Capture-phase handler: intercepts home-section links BEFORE the browser
-    // or Barba handle them. Calls barba.go() explicitly so the curtain
-    // transition runs and the page navigates correctly.
-    document.addEventListener('click', function(e) {
-      const link = e.target.closest('a[href^="/#"]');
-      if (!link) return;
-      e.preventDefault();
-      e.stopImmediatePropagation();
-      const href = link.getAttribute('href');   // e.g. "/#capabilities"
-      const hash = href.split('#')[1] ? '#' + href.split('#')[1] : null;
-      _pendingScroll = hash;                     // stored for enter hook
-      barba.go('/');                             // navigate to home root
-    }, true /* capture phase */);
   </script>
 
 </body>

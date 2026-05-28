@@ -1777,12 +1777,10 @@
 
   <!-- Barba.js init + GSAP cinematic transitions ─────────────────────── -->
   <script>
-    var _pendingScroll = null;
-
     barba.init({
       prevent: ({ el }) => {
         const href = el.getAttribute('href') || '';
-        return href.startsWith('#') || href === '' || href === '/';
+        return href.startsWith('#') || href === '' || href === '/' || href.startsWith('/#');
       },
 
       transitions: [{
@@ -1805,17 +1803,6 @@
               ['.hero-tag', 'h1.hero-title', '.hero-desc-grid p', '.hero-ctas', '.stat-item'],
               { opacity: 1, y: 0 }
             );
-          }
-
-          // Scroll to target section INSTANTLY while curtain covers screen
-          const scrollTarget = _pendingScroll || window.location.hash || null;
-          _pendingScroll = null;
-          if (scrollTarget) {
-            const el = document.querySelector(scrollTarget);
-            if (el) {
-              const top = el.getBoundingClientRect().top + window.scrollY - 88;
-              window.scrollTo(0, Math.max(0, top));
-            }
           }
 
           if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
@@ -1851,7 +1838,7 @@
           initScrollReveal(next.container);
         },
 
-        /* ── ONCE: first page load (home loader + hero entrance) ── */
+        /* ── ONCE: first page load ── */
         once({ next }) {
           if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
             const loader = document.getElementById('page-loader');
@@ -1860,6 +1847,17 @@
           }
 
           if (next.namespace === 'home') {
+            // Navigated here via window.location.href from FAQ (hash present)
+            // Skip loader, reveal hero immediately, let browser handle scroll
+            if (window.location.hash) {
+              const loader = document.getElementById('page-loader');
+              if (loader) loader.style.display = 'none';
+              document.querySelectorAll('.hero-tag, h1.hero-title, .hero-desc-grid p, .hero-ctas, .stat-item')
+                .forEach(el => { el.style.opacity = '1'; el.style.transform = 'none'; });
+              return;
+            }
+
+            // Normal first-load: full loader + hero entrance
             const tl = gsap.timeline({ defaults: { ease: 'power3.out' } });
             return tl
               .from('.loader-logo-wrap', { opacity: 0, y: 10, duration: 0.55, delay: 0.2 })
@@ -1880,16 +1878,24 @@
       }]
     });
 
-    // Capture-phase handler for root-relative section links (e.g. /#capabilities)
+    // Capture-phase handler: /#section and / links → curtain + full reload
     document.addEventListener('click', function(e) {
-      const link = e.target.closest('a[href^="/#"]');
+      var link = e.target.closest('a');
       if (!link) return;
+      var href = link.getAttribute('href') || '';
+      if (href !== '/' && !href.startsWith('/#')) return;
       e.preventDefault();
       e.stopImmediatePropagation();
-      const href = link.getAttribute('href');
-      const hash = href.split('#')[1] ? '#' + href.split('#')[1] : null;
-      _pendingScroll = hash;
-      barba.go('/');
+      if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+        window.location.href = href;
+        return;
+      }
+      gsap.fromTo('.transition-curtain',
+        { xPercent: 100 },
+        { xPercent: 0, duration: 0.55, ease: 'power4.inOut',
+          onComplete: function() { window.location.href = href; }
+        }
+      );
     }, true);
 
     // Safety net: mostrar contenido si GSAP/Barba fallan en 4s
